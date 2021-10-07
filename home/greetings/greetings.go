@@ -16,7 +16,8 @@ func Hello(name string) (string, error) { // 2개의 값을 반환할 수 있다
 
 	// Return a greeting that embeds the name in a message.
 	// in a greeting message
-	message := fmt.Sprintf(randomFormat(), name)
+	//message := fmt.Sprintf(randomFormat(), name)
+	message := fmt.Sprint(randomFormat())
 	return message, nil // nil => 오류 없음을 의미
 }
 
