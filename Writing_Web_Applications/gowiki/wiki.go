@@ -42,22 +42,24 @@ func loadPage(title string) (*Page, error) {
 	return &Page{Title: title, Body: body}, nil
 }
 
-//  func viewHandler(w http.ResponseWriter, r *http.Request) {
-// 	//title := r.URL.Path[len("/view/"):] // len("/view/") => 6, [A:B] => index의 A부터 B까지 부분 문자열, ex) r.URL.Path = /view/TestPage, r.URL.Path[len("/view/"):] => TestPage
-// 	//log.Println("title : " + title)
-// 	title, err := getTitle(w, r)
-// 	if err != nil {
-// 		return
-// 	}
+/*
+func viewHandler(w http.ResponseWriter, r *http.Request) {
+	//title := r.URL.Path[len("/view/"):] // len("/view/") => 6, [A:B] => index의 A부터 B까지 부분 문자열, ex) r.URL.Path = /view/TestPage, r.URL.Path[len("/view/"):] => TestPage
+	//log.Println("title : " + title)
+	title, err := getTitle(w, r)
+	if err != nil {
+		return
+	}
 	
-// 	//p, _ := loadPage(title) // Again, note the use of _ to ignore the error return value from loadPage. This is done here for simplicity and generally considered bad practice.
-// 	p, err := loadPage(title)
-// 	if err != nil {
-// 		http.Redirect(w, r, "/edit/" + title, http.StatusFound)
-// 		return
-// 	}
-// 	renderTemplate(w, "view", p)
-// }
+	//p, _ := loadPage(title) // Again, note the use of _ to ignore the error return value from loadPage. This is done here for simplicity and generally considered bad practice.
+	p, err := loadPage(title)
+	if err != nil {
+		http.Redirect(w, r, "/edit/" + title, http.StatusFound)
+		return
+	}
+	renderTemplate(w, "view", p)
+}
+*/
 
 func viewHandler(w http.ResponseWriter, r *http.Request, title string) {
 	p, err := loadPage(title)
@@ -70,19 +72,20 @@ func viewHandler(w http.ResponseWriter, r *http.Request, title string) {
 	renderTemplate(w, "view", p)
 }
 
-// func editHandler(w http.ResponseWriter, r *http.Request) {
-// 	// title := r.URL.Path[len("/edit/"):]
-// 	title, err := getTitle(w, r)
-// 	if err != nil {
-// 		return
-// 	}
-	
-// 	p, err := loadPage(title)
-// 	if err != nil {
-// 		p = &Page{Title: title}
-// 	}
-// 	renderTemplate(w, "edit", p)
-// }
+/*
+func editHandler(w http.ResponseWriter, r *http.Request) {
+	// title := r.URL.Path[len("/edit/"):]
+	title, err := getTitle(w, r)
+	if err != nil {
+		return
+	}
+	p, err := loadPage(title)
+	if err != nil {
+		p = &Page{Title: title}
+	}
+	renderTemplate(w, "edit", p)
+}
+*/
 
 func editHandler(w http.ResponseWriter, r *http.Request, title string) {
 	p, err := loadPage(title)
@@ -112,22 +115,23 @@ func renderTemplate(w http.ResponseWriter, tmpl string, p *Page) {
     }
 }
 
-// func saveHandler(w http.ResponseWriter, r *http.Request) {
-// 	// title := r.URL.Path[len("/save/"):]
-// 	title, err := getTitle(w, r)
-// 	if err != nil {
-// 		return
-// 	}
-	
-// 	body := r.FormValue("body")
-// 	p := &Page{Title: title, Body: []byte(body)}
-// 	err = p.save()
-// 	if err != nil {
-// 		http.Error(w, err.Error(), http.StatusInternalServerError)
-// 		return
-// 	}
-// 	http.Redirect(w, r, "/view/" + title, http.StatusFound)
-// }
+/*
+func saveHandler(w http.ResponseWriter, r *http.Request) {
+	// title := r.URL.Path[len("/save/"):]
+	title, err := getTitle(w, r)
+	if err != nil {
+		return
+	}
+	body := r.FormValue("body")
+	p := &Page{Title: title, Body: []byte(body)}
+	err = p.save()
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	http.Redirect(w, r, "/view/" + title, http.StatusFound)
+}
+*/
 
 func saveHandler(w http.ResponseWriter, r *http.Request, title string) {
 	body := r.FormValue("body")
@@ -163,12 +167,17 @@ func makeHandler(fn func (http.ResponseWriter, *http.Request, string)) http.Hand
 	}
 }
 
+func rootHandler(w http.ResponseWriter, r *http.Request) {
+	http.Redirect(w, r, "/view/FrontPage", http.StatusFound)
+} 
+
 func main() {
 	// p1 := &Page{Title: "TestPage", Body: []byte("This is a sample Page.")}
 	// p1.save()
 	// p2, _ := loadPage("TestPage")
 	// fmt.Println(string(p2.Body))
 
+	http.HandleFunc("/", rootHandler)
 	http.HandleFunc("/view/", makeHandler(viewHandler))
 	http.HandleFunc("/edit/", makeHandler(editHandler))
 	http.HandleFunc("/save/", makeHandler(saveHandler))
