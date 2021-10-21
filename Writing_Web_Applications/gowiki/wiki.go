@@ -14,11 +14,14 @@ type Page struct {
 	Body  []byte
 }
 
-var templates = template.Must(template.ParseFiles("edit.html", "view.html"))
+var templates = template.Must(template.ParseFiles(templateDirPath + "edit.html", templateDirPath + "view.html"))
 var validPath = regexp.MustCompile("^/(edit|save|view)/([a-zA-Z0-9]+)$")
 
+const templateDirPath = "tmpl/"
+const dataDirPath = "data/"
+
 func (p *Page) save() error {
-	filename := p.Title + ".txt"
+	filename := dataDirPath + p.Title + ".txt"
 	return ioutil.WriteFile(filename, p.Body, 0600)
 }
 
@@ -31,7 +34,7 @@ func loadPage(title string) *Page {
 */
 
 func loadPage(title string) (*Page, error) {
-	filename := title + ".txt"
+	filename := dataDirPath + title + ".txt"
 	body, err := ioutil.ReadFile(filename)
 	if err != nil {
 		return nil, err
@@ -135,7 +138,7 @@ func saveHandler(w http.ResponseWriter, r *http.Request, title string) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	
+
 	http.Redirect(w, r, "/view/" + title, http.StatusFound)
 }
 
