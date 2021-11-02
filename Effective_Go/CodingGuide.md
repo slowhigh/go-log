@@ -3,7 +3,7 @@
 
 1. Commentary
 
-1.1. Every package should have a package comment, a block comment preceding the package clause. For multi-file packages, the package comment only needs to be present in one file, and any one will do. The package comment should introduce the package and provide information relevant to the package as a whole. It will appear first on the godoc page and should set up the detailed documentation that follows.
+    1.1. Every package should have a package comment, a block comment preceding the package clause. For multi-file packages, the package comment only needs to be present in one file, and any one will do. The package comment should introduce the package and provide information relevant to the package as a whole. It will appear first on the godoc page and should set up the detailed documentation that follows.
 
     ```
     /*
@@ -26,13 +26,13 @@
     package regexp
     ```
 
-1.2. If every doc comment begins with the name of the item it describes, you can use the doc subcommand of the go tool and run the output through grep. Imagine you couldn't remember the name "Compile" but were looking for the parsing function for regular expressions, so you ran the command,
+    1.2. If every doc comment begins with the name of the item it describes, you can use the doc subcommand of the go tool and run the output through grep. Imagine you couldn't remember the name "Compile" but were looking for the parsing function for regular expressions, so you ran the command,
 
     ```
     $ go doc -all regexp | grep -i parse
     ```
 
-If all the doc comments in the package began, "This function...", grep wouldn't help you remember the name. But because the package starts each doccomment with the name, you'd see something like this, which recalls the word you're looking for.
+    If all the doc comments in the package began, "This function...", grep wouldn't help you remember the name. But because the package starts each doccomment with the name, you'd see something like this, which recalls the word you're looking for.
 
     ```
     $ go doc -all regexp | grep -i parse
@@ -65,13 +65,13 @@ If all the doc comments in the package began, "This function...", grep wouldn't 
     package regexp
     ```
 
-1.2. If every doc comment begins with the name of the item itdescribes, you can use the doc subcommand of the go tool and runthe output through grep. Imagine you couldn't remember the name"Compile" but were looking for the parsing function for regularexpressions, so you ran the command,
+    1.2. If every doc comment begins with the name of the item itdescribes, you can use the doc subcommand of the go tool and runthe output through grep. Imagine you couldn't remember the name"Compile" but were looking for the parsing function for regularexpressions, so you ran the command,
     
     ```
     $ go doc -all regexp | grep -i parse
     ```
 
-If all the doc comments in the package began, "This function...", grep wouldn't help you remember the name. But because the package starts each doc comment with the name, you'd see something like this, which recalls the word you're looking for.
+    If all the doc comments in the package began, "This function...", grep wouldn't help you remember the name. But because the package starts each doc comment with the name, you'd see something like this, which recalls the word you're looking for.
     
     ```
     $ go doc -all regexp | grep -i parse
@@ -84,15 +84,15 @@ If all the doc comments in the package began, "This function...", grep wouldn't 
 
 2. Names
 
-2.1. Package names
-For instance, the buffered reader type in the bufio package is called Reader, not BufReader, because users see it as bufio.Reader, which is a clear, concise name. Moreover, because imported entities are always addressed with their package name, bufio.Reader does not conflict with io.Reader.
+    2.1. Package names
+    For instance, the buffered reader type in the bufio package is called Reader, not BufReader, because users see it as bufio.Reader, which is a clear, concise name. Moreover, because imported entities are always addressed with their package name, bufio.Reader does not conflict with io.Reader.
 
-the function to make new instances of ring.Ring—which is the definition of a constructor in Go—would normally be called NewRing, but since Ring is the only type exported by the package, and since the package is called ring, it's called just New, which clients of the package see as ring.New.
+    the function to make new instances of ring.Ring—which is the definition of a constructor in Go—would normally be called NewRing, but since Ring is the only type exported by the package, and since the package is called ring, it's called just New, which clients of the package see as ring.New.
 
-2.2. Getters
-If you have a field called owner (lower case, unexported), the getter method should be called Owner (upper case, exported), not GetOwner.
+    2.2. Getters
+    If you have a field called owner (lower case, unexported), the getter method should be called Owner (upper case, exported), not GetOwner.
 
-The use of upper-case names for export provides the hook to discriminate the field from the method. A setter function, if needed, will likely be called SetOwner.
+    The use of upper-case names for export provides the hook to discriminate the field from the method. A setter function, if needed, will likely be called SetOwner.
     
     ```
     owner := obj.Owner()
@@ -101,22 +101,22 @@ The use of upper-case names for export provides the hook to discriminate the fie
     }
     ```
     
-2.3. Interface names
-By convention, one-method interfaces are named by the method name plus an -er suffix or similar modification to construct an agent noun: Reader, Writer, Formatter, CloseNotifier etc.
+    2.3. Interface names
+    By convention, one-method interfaces are named by the method name plus an -er suffix or similar modification to construct an agent noun: Reader, Writer, Formatter, CloseNotifier etc.
 
-2.4. MixedCaps
-Finally, the convention in Go is to use MixedCaps or mixedCaps rather than underscores to write multiword names.
+    2.4. MixedCaps
+    Finally, the convention in Go is to use MixedCaps or mixedCaps rather than underscores to write multiword names.
 
 
 3. Semicolons
 
-If the last token before a newline is an identifier (which includes words like int and float64), a basic literal such as a number or string constant, or one of the tokens
+    If the last token before a newline is an identifier (which includes words like int and float64), a basic literal such as a number or string constant, or one of the tokens
 
     break continue fallthrough return ++ -- ) } 
 
-One consequence of the semicolon insertion rules is that you cannot put the opening brace of a control structure (if, for, switch, or select) on the next line.
+    One consequence of the semicolon insertion rules is that you cannot put the opening brace of a control structure (if, for, switch, or select) on the next line.
 
-Write them like this
+    Write them like this
 
     ```
     if i < f() {
@@ -124,7 +124,7 @@ Write them like this
     }
     ```
 
-not like this
+    not like this
 
     ```
     if i < f()  // wrong!
@@ -136,9 +136,9 @@ not like this
 
 4. Control structures
 
-4.1. If
+    4.1. If
 
-In Go a simple if looks like this:
+    In Go a simple if looks like this:
 
     ```
     if x > 0 {
@@ -147,9 +147,9 @@ In Go a simple if looks like this:
     ```
 
 
-4.2. For
+    4.2. For
 
-The Go for loop is similar to—but not the same as—C's. It unifies for and while and there is no do-while. There are three forms, only one of which has semicolons.
+    The Go for loop is similar to—but not the same as—C's. It unifies for and while and there is no do-while. There are three forms, only one of which has semicolons.
 
     ```
     // Like a C for
@@ -202,7 +202,7 @@ The Go for loop is similar to—but not the same as—C's. It unifies for and wh
     // character U+8A9E '語' starts at byte position 7
     ```
 
-Finally, Go has no comma operator and ++ and -- are statements not expressions. Thus if you want to run multiple variables in a for you should use parallel assignment (although that precludes ++ and --).
+    Finally, Go has no comma operator and ++ and -- are statements not expressions. Thus if you want to run multiple variables in a for you should use parallel assignment (although that precludes ++ and --).
 
     ```
     a := [9]int{1,2,3,4,5,6,7,8,9}
@@ -214,9 +214,9 @@ Finally, Go has no comma operator and ++ and -- are statements not expressions. 
     fmt.Println(a)
     ```
 
-4.3. Switch
+    4.3. Switch
 
-Go's switch is more general than C's. The expressions need not be constants or even integers, the cases are evaluated top to bottom until a match is found, and if the switch has no expression it switches on true. It's therefore possible—and idiomatic—to write an if-else-if-else chain as a switch.
+    Go's switch is more general than C's. The expressions need not be constants or even integers, the cases are evaluated top to bottom until a match is found, and if the switch has no expression it switches on true. It's therefore possible—and idiomatic—to write an if-else-if-else chain as a switch.
 
     ```
     func unhex(c byte) byte {
@@ -232,21 +232,148 @@ Go's switch is more general than C's. The expressions need not be constants or e
     }
     ```
 
-There is no automatic fall through, but cases can be presented in comma-separated lists.
+    There is no automatic fall through, but cases can be presented in comma-separated lists.
 
     ```
     a:= 3;
     
     switch {
         case a < 9:
-            fmt.Println("9")
+            fmt.Print("9")
         case a < 8:
-            fmt.Println("8")
+            fmt.Print("8")
         case a < 7:
-            fmt.Println("7")
+            fmt.Print("7")
         case a < 6:
-            fmt.Println("6")
+            fmt.Print("6")
     }
 
     // prints
+    // 9876 (X) => 9 (O)
+    ```
+
+    ```
+    func shouldEscape(c byte) bool {
+        switch c {
+        case ' ', '?', '&', '=', '#', '+', '%':
+            return true
+        }
+        return false
+    }
+    ```
+
+    Although they are not nearly as common in Go as some other C-like languages, break statements can be used to terminate a switch early. Sometimes, though, it's necessary to break out of a surrounding loop, not the switch, and in Go that can be accomplished by putting a label on the loop and "breaking" to that label. This example shows both uses.
+
+    ```
+    Loop:     
+	
+    for a := 0; a < 10; a++ {
+        switch {        
+            case a < 5:
+                fmt.Print("1")
+            	break Loop
+
+            case a < 6:
+                fmt.Print("2")
+            	break Loop
+
+            case a < 7:
+                fmt.Print("3")
+                break Loop
+
+            case a < 8:
+                fmt.Print("4")
+            	break Loop
+        }
+    }
+    
+    fmt.Println("end")
+
+    // prints
+    // 1end
+    ```
+
+    4.3. Type switch
+
+    A switch can also be used to discover the dynamic type of an interface variable. Such a type switch uses the syntax of a type assertion with the keyword type inside the parentheses. If the switch declares a variable in the expression, the variable will have the corresponding type in each clause. It's also idiomatic to reuse the name in such cases, in effect declaring a new variable with the same name but a different type in each case.
+
+    ```
+    var t interface{}
+    t = functionOfSomeType()
+    switch t := t.(type) {
+    default:
+        fmt.Printf("unexpected type %T\n", t)     // %T prints whatever type t has
+    case bool:
+        fmt.Printf("boolean %t\n", t)             // t has type bool
+    case int:
+        fmt.Printf("integer %d\n", t)             // t has type int
+    case *bool:
+        fmt.Printf("pointer to boolean %t\n", *t) // t has type *bool
+    case *int:
+        fmt.Printf("pointer to integer %d\n", *t) // t has type *int
+    }
+    ```
+
+5. Functions
+
+    5.1. Multiple return values
+
+    One of Go's unusual features is that functions and methods can return multiple values.
+
+    In C, a write error is signaled by a negative count with the error code secreted away in a volatile location. In Go, Write can return a count and an error: “Yes, you wrote some bytes but not all of them because you filled the device”. The signature of the Write method on files from package os is:
+
+    ```
+    func (file *File) Write(b []byte) (n int, err error)
+    ```
+
+    5.2. Multiple return values
+
+    The return or result "parameters" of a Go function can be given names and used as regular variables, just like the incoming parameters. When named, they are initialized to the zero values for their types when the function begins; if the function executes a return statement with no arguments, the current values of the result parameters are used as the returned values.
+
+    ```
+    func nextInt(b []byte, pos int) (value, nextPos int) {
+    ```
+
+    Because named results are initialized and tied to an unadorned return, they can simplify as well as clarify. Here's a version of io.ReadFull that uses them well:
+
+    ```
+    func ReadFull(r Reader, buf []byte) (n int, err error) {
+        for len(buf) > 0 && err == nil {
+            var nr int
+            nr, err = r.Read(buf)
+            n += nr
+            buf = buf[nr:]
+        }
+        return
+    }
+    ```
+
+
+    5.3. Defer
+
+    Go's defer statement schedules a function call (the deferred function) to be run immediately before the function executing the defer returns. It's an unusual but effective way to deal with situations such as resources that must be released regardless of which path a function takes to return. The canonical examples are unlocking a mutex or closing a file.
+
+    ```
+    // Contents returns the file's contents as a string.
+    func Contents(filename string) (string, error) {
+        f, err := os.Open(filename)
+        if err != nil {
+            return "", err
+        }
+        defer f.Close()  // f.Close will run when we're finished.
+
+        var result []byte
+        buf := make([]byte, 100)
+        for {
+            n, err := f.Read(buf[0:])
+            result = append(result, buf[0:n]...) // append is discussed later.
+            if err != nil {
+                if err == io.EOF {
+                    break
+                }
+                return "", err  // f will be closed if we return here.
+            }
+        }
+        return string(result), nil // f will be closed if we return here.
+    }
     ```
