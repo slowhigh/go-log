@@ -506,3 +506,91 @@
     s := []string      {Enone: "no error", Eio: "Eio", Einval: "invalid argument"}
     m := map[int]string{Enone: "no error", Eio: "Eio", Einval: "invalid argument"}
     ```
+
+
+    6.3. Allocation with make
+
+    It creates slices, maps, and channels only, and it returns an initialized (not zeroed) value of type T (not *T). The reason for the distinction is that these three types represent, under the covers, references to data structures that must be initialized before use.
+
+    For instance,
+
+    ```
+    make([]int, 10, 100)
+    ```
+
+    allocates an array of 100 ints and then creates a slice structure with length 10 and a capacity of 100 pointing at the first 10 elements of the array. (When making a slice, the capacity can be omitted; see the section on slices for more information.) In contrast, new([]int) returns a pointer to a newly allocated, zeroed slice structure, that is, a pointer to a nil slice value.
+
+    ```
+    var p *[]int = new([]int)       // allocates slice structure; *p == nil; rarely useful
+    var v  []int = make([]int, 100) // the slice v now refers to a new array of 100 ints
+
+    // Unnecessarily complex:
+    var p *[]int = new([]int)
+    *p = make([]int, 100, 100)
+
+    // Idiomatic:
+    v := make([]int, 100)
+    ```
+
+    Remember that make applies only to maps, slices and channels and does not return a pointer. To obtain an explicit pointer allocate with new or take the address of a variable explicitly.
+
+
+    6.4. Arrays
+
+    Arrays are useful when planning the detailed layout of memory and sometimes can help avoid allocation, but primarily they are a building block for slices, the subject of the next section.
+
+    There are major differences between the ways arrays work in Go and C. In Go,
+
+    - Arrays are values. Assigning one array to another copies all the elements.
+    - In particular, if you pass an array to a function, it will receive a copy of the array, not a pointer to it.
+    - The size of an array is part of its type. The types [10]int and [20]int are distinct.
+
+    The value property can be useful but also expensive; if you want C-like behavior and efficiency, you can pass a pointer to the array.
+
+    ```
+    func Sum(a *[3]float64) (sum float64) {
+        for _, v := range *a {
+            sum += v
+        }
+        return
+    }
+
+    array := [...]float64{7.0, 8.5, 9.1}
+    x := Sum(&array)  // Note the explicit address-of operator
+    ```
+
+    But even this style isn't idiomatic Go. Use slices instead.
+
+
+    6.5. Slices
+
+    Slices wrap arrays to give a more general, powerful, and convenient interface to sequences of data. Except for items with explicit dimension such as transformation matrices, most array programming in Go is done with slices rather than simple arrays.
+
+    Slices hold references to an underlying array, and if you assign one slice to another, both refer to the same array. If a function takes a slice argument, changes it makes to the elements of the slice will be visible to the caller, analogous to passing a pointer to the underlying array. A Read function can therefore accept a slice argument rather than a pointer and a count; the length within the slice sets an upper limit of how much data to read. Here is the signature of the Read method of the File type in package os:
+
+    ```
+    func (f *File) Read(buf []byte) (n int, err error)
+    ```
+
+    The method returns the number of bytes read and an error value, if any. To read into the first 32 bytes of a larger buffer buf, slice (here used as a verb) the buffer.
+
+    ```
+    n, err := f.Read(buf[0:32])
+    ```
+
+    Such slicing is common and efficient. In fact, leaving efficiency aside for the moment, the following snippet would also read the first 32 bytes of the buffer.
+
+    ```
+    var n int
+    var err error
+    for i := 0; i < 32; i++ {
+        nbytes, e := f.Read(buf[i:i+1])  // Read one byte.
+        n += nbytes
+        if nbytes == 0 || e != nil {
+            err = e
+            break
+        }
+    }
+    ```
+
+    The length of a slice may be changed as long as it still fits within the limits of the underlying array; just assign it to a slice of itself. The capacity of a slice, accessible by the built-in function cap, reports the maximum length the slice may assume. Here is a function to append data to a slice. If the data exceeds the capacity, the slice is reallocated. The resulting slice is returned. The function uses the fact that len and cap are legal when applied to the nil slice, and return 0.
