@@ -594,3 +594,65 @@
     ```
 
     The length of a slice may be changed as long as it still fits within the limits of the underlying array; just assign it to a slice of itself. The capacity of a slice, accessible by the built-in function cap, reports the maximum length the slice may assume. Here is a function to append data to a slice. If the data exceeds the capacity, the slice is reallocated. The resulting slice is returned. The function uses the fact that len and cap are legal when applied to the nil slice, and return 0.
+
+    ```
+    func Append(slice, data []byte) []byte {
+        fmt.Printf("1- %v - %p[%p]\n", slice, &slice, slice)
+        l := len(slice)
+        if l + len(data) > cap(slice) {  // reallocate
+            // Allocate double what's needed, for future growth.
+            newSlice := make([]byte, (l+len(data))*2)
+            fmt.Printf("2- %v - %p[%p]\n", newSlice, &newSlice, newSlice)
+            // The copy function is predeclared and works for any slice type.
+            copy(newSlice, slice)
+            fmt.Printf("3- %v - %p[%p]\n", newSlice, &newSlice, newSlice)
+            slice = newSlice
+        } 
+        fmt.Printf("4- %v - %p[%p]\n", slice, &slice, slice)
+        slice = slice[0:l+len(data)]
+        fmt.Printf("5- %v - %p[%p]\n", slice, &slice, slice)
+        copy(slice[l:], data)
+        fmt.Printf("6- %v - %p[%p]\n", slice, &slice, slice)
+        return slice
+    }
+
+    func main() {
+        slice := make([]byte, 5, 10)
+        slice2 := []byte { 2,2,2,2,2,2 }
+        Append(slice, slice2)
+    }
+
+    // - print -
+    // 1- [0 0 0 0 0] - 0xc000004078[0xc0000120b0]
+    // 2- [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0] - 0xc0000040c0[0xc000014198]
+    // 3- [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0] - 0xc0000040c0[0xc000014198]
+    // 4- [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0] - 0xc000004078[0xc000014198]
+    // 5- [0 0 0 0 0 0 0 0 0 0 0] - 0xc000004078[0xc000014198]
+    // 6- [0 0 0 0 0 2 2 2 2 2 2] - 0xc000004078[0xc000014198]
+    ```
+
+    We must return the slice afterwards because, although Append can modify the elements of slice, the slice itself (the run-time data structure holding the pointer, length, and capacity) is passed by value.
+
+
+    6.6. Two-dimensional slices
+
+    Go's arrays and slices are one-dimensional. To create the equivalent of a 2D array or slice, it is necessary to define an array-of-arrays or slice-of-slices, like this:
+
+    ```
+    type Transform [3][3]float64  // A 3x3 array, really an array of arrays.
+    type LinesOfText [][]byte     // A slice of byte slices.
+    ```
+
+    Because slices are variable-length, it is possible to have each inner slice be a different length. That can be a common situation, as in our LinesOfText example: each line has an independent length.
+
+    ```
+    text := LinesOfText{
+        []byte("Now is the time"),
+        []byte("for all good gophers"),
+        []byte("to bring some fun to the party."),
+    }
+    ```
+
+    
+
+

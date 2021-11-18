@@ -2,38 +2,37 @@ package main
 
 import (
 	"fmt"
-	"time"
 )
 
-func b() {
-	for i := 20; i < 30; i++ {
-		defer fmt.Printf("%d ", i)
-	}
-}
-
-func a() {
-	for i := 0; i < 10; i++ {
-		defer fmt.Printf("%d ", i)
-	}
-
-	time.Sleep(time.Second * 3)
-
-	for i := 10; i < 20; i++ {
-		fmt.Printf("%d ", i)
-	}
+func Append(slice, data []byte) []byte {
+	fmt.Printf("1-  %v - %p[%p]\n", slice, &slice, slice)
+    l := len(slice)
+    if l + len(data) > cap(slice) {  // reallocate
+        // Allocate double what's needed, for future growth.
+        newSlice := make([]byte, (l+len(data))*2)
+		fmt.Printf("2- %v - %p[%p]\n", newSlice, &newSlice, newSlice)
+        // The copy function is predeclared and works for any slice type.
+        copy(newSlice, slice)
+		fmt.Printf("3- %v - %p[%p]\n", newSlice, &newSlice, newSlice)
+        slice = newSlice
+    } 
+	fmt.Printf("4- %v - %p[%p]\n", slice, &slice, slice)
+    slice = slice[0:l+len(data)]
+	fmt.Printf("5- %v - %p[%p]\n", slice, &slice, slice)
+    copy(slice[l:], data)
+	fmt.Printf("6- %v - %p[%p]\n", slice, &slice, slice)
+    return slice
 }
 
 func main() {
-	var v  []int = make([]int, 5, 10) 
-	v[0] = 1;
-	v[1] = 1;
-	v[2] = 1;
-	v[3] = 1;
-	v[4] = 1;
-	v[5] = 1
-	v[6] = 1;
-	v[7] = 1;
-	v[8] = 1;
-	v[9] = 1;
-	v[10] = 1;
+	slice := make([]byte, 5, 10)
+	slice2 := []byte { 2,2,2,2,2,2 }
+	Append(slice, slice2)
 }
+
+// 1- [0 0 0 0 0] - 0xc000004078[0xc0000120b0]
+// 2- [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0] - 0xc0000040c0[0xc000014198]
+// 3- [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0] - 0xc0000040c0[0xc000014198]
+// 4- [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0] - 0xc000004078[0xc000014198]
+// 5- [0 0 0 0 0 0 0 0 0 0 0] - 0xc000004078[0xc000014198]
+// 6- [0 0 0 0 0 2 2 2 2 2 2] - 0xc000004078[0xc000014198]
