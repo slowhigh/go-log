@@ -653,6 +653,151 @@
     }
     ```
 
+    Sometimes it's necessary to allocate a 2D slice, a situation that can arise when processing scan lines of pixels, for instance. There are two ways to achieve this. One is to allocate each slice independently; the other is to allocate a single array and point the individual slices into it. Which to use depends on your application. If the slices might grow or shrink, they should be allocated independently to avoid overwriting the next line; if not, it can be more efficient to construct the object with a single allocation. For reference, here are sketches of the two methods. First, a line at a time:
+
+    ```
+    // Allocate the top-level slice.
+    picture := make([][]uint8, 5) // One row per unit of y.
+	// Loop over the rows, allocating the slice for each row.
+	for i := range picture {
+		picture[i] = make([]uint8, 3)
+		fmt.Printf("- %v - %p[%p]\n", picture, &picture, picture)
+		fmt.Printf("- %v - %p[%p]\n", picture[i], &picture[i], picture[i])
+	}
+
+	fmt.Printf("- %v - %p\n", picture[0][0], &picture[0][0])
+	fmt.Printf("- %v - %p\n", picture[0][1], &picture[0][1])
+	fmt.Printf("- %v - %p\n", picture[0][2], &picture[0][2])
+
+    // - [[0 0 0] [] [] [] []] - 0xc000098060[0xc0000e0000]
+    // - [0 0 0] - 0xc0000e0000[0xc0000ac058]
+    // - [[0 0 0] [0 0 0] [] [] []] - 0xc000098060[0xc0000e0000]
+    // - [0 0 0] - 0xc0000e0018[0xc0000ac07b]
+    // - [[0 0 0] [0 0 0] [0 0 0] [] []] - 0xc000098060[0xc0000e0000]
+    // - [0 0 0] - 0xc0000e0030[0xc0000ac0a4]
+    // - [[0 0 0] [0 0 0] [0 0 0] [0 0 0] []] - 0xc000098060[0xc0000e0000]
+    // - [0 0 0] - 0xc0000e0048[0xc0000ac0b0]
+    // - [[0 0 0] [0 0 0] [0 0 0] [0 0 0] [0 0 0]] - 0xc000098060[0xc0000e0000]
+    // - [0 0 0] - 0xc0000e0060[0xc0000ac0c0]
+    // - 0 - 0xc0000ac058
+    // - 0 - 0xc0000ac059
+    // - 0 - 0xc0000ac05a
+    ```
+
+    And now as one allocation, sliced into lines:
+
+    ```
+    // Allocate the top-level slice, the same as before.
+	picture := make([][]uint8, 5) // One row per unit of y.
+	// Allocate one large slice to hold all the pixels.
+	pixels := make([]uint8, 3*5) // Has type []uint8 even though picture is [][]uint8.
+	// Loop over the rows, slicing each row from the front of the remaining pixels slice.
+	for i := range picture {
+		picture[i], pixels = pixels[:3], pixels[3:]
+        fmt.Printf("- %v - %p[%p]\n", picture, &picture, picture)
+        fmt.Printf("- %v - %p[%p]\n", picture[i], &picture[i], picture[i])
+		fmt.Printf("- %v - %p[%p]\n", pixels, &pixels, pixels)
+	}
+
+    // - [[0 0 0] [] [] [] []] - 0xc000004078[0xc000112000]
+    // - [0 0 0] - 0xc000112000[0xc0000120b0]
+    // - [0 0 0 0 0 0 0 0 0 0 0 0] - 0xc000004090[0xc0000120b3]
+    // - [[0 0 0] [0 0 0] [] [] []] - 0xc000004078[0xc000112000]
+    // - [0 0 0] - 0xc000112018[0xc0000120b3]
+    // - [0 0 0 0 0 0 0 0 0] - 0xc000004090[0xc0000120b6]
+    // - [[0 0 0] [0 0 0] [0 0 0] [] []] - 0xc000004078[0xc000112000]
+    // - [0 0 0] - 0xc000112030[0xc0000120b6]
+    // - [0 0 0 0 0 0] - 0xc000004090[0xc0000120b9]
+    // - [[0 0 0] [0 0 0] [0 0 0] [0 0 0] []] - 0xc000004078[0xc000112000]
+    // - [0 0 0] - 0xc000112048[0xc0000120b9]
+    // - [0 0 0] - 0xc000004090[0xc0000120bc]
+    // - [[0 0 0] [0 0 0] [0 0 0] [0 0 0] [0 0 0]] - 0xc000004078[0xc000112000]
+    // - [0 0 0] - 0xc000112060[0xc0000120bc]
+    // - [] - 0xc000004090[0xc0000120bc]
+    ```
+
+
+    6.7. Maps
+
+    Maps are a convenient and powerful built-in data structure that associate values of one type (the key) with values of another type (the element or value). The key can be of any type for which the equality operator is defined, such as integers, floating point and complex numbers, strings, pointers, interfaces (as long as the dynamic type supports equality), structs and arrays. Slices cannot be used as map keys, because equality is not defined on them. Like slices, maps hold references to an underlying data structure. If you pass a map to a function that changes the contents of the map, the changes will be visible in the caller.
+
+    Maps can be constructed using the usual composite literal syntax with colon-separated key-value pairs, so it's easy to build them during initialization.
+
+    ```
+    var timeZone = map[string]int{
+        "UTC":  0*60*60,
+        "EST": -5*60*60,
+        "CST": -6*60*60,
+        "MST": -7*60*60,
+        "PST": -8*60*60,
+    }
+    ```
+
+    Assigning and fetching map values looks syntactically just like doing the same for arrays and slices except that the index doesn't need to be an integer.
+
+    ```
+    offset := timeZone["EST"]
+    ```
+
+    An attempt to fetch a map value with a key that is not present in the map will return the zero value for the type of the entries in the map.
+
+    ```
+    attended := map[string]bool{
+        "Ann": true,
+        "Joe": true,
+        ...
+    }
+
+    if attended[person] { // will be false if person is not in the map
+        fmt.Println(person, "was at the meeting")
+    }
+    ```
+
+    Sometimes you need to distinguish a missing entry from a zero value. Is there an entry for "UTC" or is that 0 because it's not in the map at all? You can discriminate with a form of multiple assignment.
+
+    ```
+    var seconds int
+    var ok bool
+    seconds, ok = timeZone[tz]
+    ```
+
+    For obvious reasons this is called the “comma ok” idiom. In this example, if tz is present, seconds will be set appropriately and ok will be true; if not, seconds will be set to zero and ok will be false. Here's a function that puts it together with a nice error report:
+
+    ```
+    func offset(tz string) int {
+        if seconds, ok := timeZone[tz]; ok {
+            return seconds
+        }
+        log.Println("unknown time zone:", tz)
+        return 0
+    }
+    ```
+
+    To test for presence in the map without worrying about the actual value, you can use the blank identifier (_) in place of the usual variable for the value.
+
+    ```
+    _, present := timeZone[tz]
+    ```
+
+    To delete a map entry, use the delete built-in function, whose arguments are the map and the key to be deleted. It's safe to do this even if the key is already absent from the map.
+
+    ```
+    delete(timeZone, "PDT")  // Now on Standard Time
+    ```
+
     
 
+    6.8. Printing
 
+    The functions live in the fmt package and have capitalized names: fmt.Printf, fmt.Fprintf, fmt.Sprintf and so on. The string functions (Sprintf etc.) return a string rather than filling in a provided buffer.
+
+    You don't need to provide a format string. For each of Printf, Fprintf and Sprintf there is another pair of functions, for instance Print and Println. These functions do not take a format string but instead generate a default format for each argument. The Println versions also insert a blank between arguments and append a newline to the output while the Print versions add blanks only if the operand on neither side is a string. In this example each line produces the same output.
+
+    ```
+    fmt.Printf("Hello %d\n", 23)
+    fmt.Fprint(os.Stdout, "Hello ", 23, "\n")
+    fmt.Println("Hello", 23)
+    fmt.Println(fmt.Sprint("Hello ", 23))
+    ```
+
+    
