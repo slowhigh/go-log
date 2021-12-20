@@ -800,4 +800,43 @@
     fmt.Println(fmt.Sprint("Hello ", 23))
     ```
 
-    
+    The formatted print functions fmt.Fprint and friends take as a first argument any object that implements the io.Writer interface; the variables os.Stdout and os.Stderr are familiar instances.
+
+    First, the numeric formats such as %d do not take flags for signedness or size; instead, the printing routines use the type of the argument to decide these properties.
+
+    ```
+    var x uint64 = 1<<64 - 1
+    fmt.Printf("%d %x; %d %x\n", x, x, int64(x), int64(x))
+
+    // print
+    // 18446744073709551615 ffffffffffffffff; -1 -1
+    ```
+
+    If you just want the default conversion, such as decimal for integers, you can use the catchall format %v (for “value”); the result is exactly what Print and Println would produce. Moreover, that format can print any value, even arrays, slices, structs, and maps. Here is a print statement for the time zone map defined in the previous section.
+
+    ```
+    fmt.Printf("%v\n", timeZone)  // or just fmt.Println(timeZone)
+    ```
+
+    which gives output:
+
+    ```
+    map[CST:-21600 EST:-18000 MST:-25200 PST:-28800 UTC:0]
+    ```
+
+    For maps, Printf and friends sort the output lexicographically by key.
+
+    When printing a struct, the modified format %+v annotates the fields of the structure with their names, and for any value the alternate format %#v prints the value in full Go syntax.
+
+    ```
+    type T struct {
+        a int
+        b float64
+        c string
+    }
+    t := &T{ 7, -2.35, "abc\tdef" }
+    fmt.Printf("%v\n", t)
+    fmt.Printf("%+v\n", t)
+    fmt.Printf("%#v\n", t)
+    fmt.Printf("%#v\n", timeZone)
+    ```
