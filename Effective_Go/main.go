@@ -4,16 +4,23 @@ import (
 	"fmt"
 )
 
-func main() {
-	a := int(uint(0))  // largest int
-	b := uint(^uint(0))  // largest int
-	c := int(^uint(0) >> 1)  // largest int
-	d := int(^uint(0) >> 1)  // largest int
-	e := int(^uint(0) >> 1)  // largest int
+type ByteSize float64
 
-	fmt.Printf("%v \n", a)
-	fmt.Printf("%v \n", b)
-	fmt.Printf("%v \n", c)
-	fmt.Printf("%v \n", d)
-	fmt.Printf("%v \n", e)
+const (
+    _           = iota // iota = 0, ignore first value by assigning to blank identifier
+    KB ByteSize = 1 << (10 * iota) // iota = 1
+    MB // = 1 << (10 * iota) , iota = 2
+    GB
+    TB
+    PB
+    EB
+    ZB
+    YB
+)
+
+func main() {
+	x := []int{1,2,3}
+	y := []int{4,5,6}
+	x = append(x, y...)
+	fmt.Println(x)
 }

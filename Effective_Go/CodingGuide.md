@@ -965,4 +965,89 @@
     // '^' => reverse bit
     ```
 
+
+
+    6.9. Append
+
+    Now we have the missing piece we needed to explain the design of the append built-in function. The signature of append is different from our custom Append function above. Schematically, it's like this:
+
+    ```
+    func append(slice []T, elements ...T) []T
+    ```
+
+    where T is a placeholder for any given type. You can't actually write a function in Go where the type T is determined by the caller. That's why append is built in: it needs support from the compiler.
+
+
+    ```
+    x := []int{1,2,3}
+    x = append(x, 4, 5, 6)
+    fmt.Println(x)
+    ```
+
+    prints [1 2 3 4 5 6]. So append works a little like Printf, collecting an arbitrary number of arguments.
+
+    But what if we wanted to do what our Append does and append a slice to a slice? Easy: use ... at the call site, just as we did in the call to Output above. This snippet produces identical output to the one above.
+
+    ```
+    x := []int{1,2,3}
+    y := []int{4,5,6}
+    x = append(x, y...)
+    fmt.Println(x)
+    ```
+
+    Without that ..., it wouldn't compile because the types would be wrong; y is not of type int.
+
+
+6. Initialization
+
+Complex structures can be built during initialization and the ordering issues among initialized objects, even among different packages, are handled correctly.
+
+
+    6.1. Constants
+
+    Constants in Go are just that—constant. They are created at compile time, even when defined as locals in functions, and can only be numbers, characters (runes), strings or booleans. Because of the compile-time restriction, the expressions that define them must be constant expressions, evaluatable by the compiler. For instance, 1<<3 is a constant expression, while math.Sin(math.Pi/4) is not because the function call to math.Sin needs to happen at run time.
+
+    In Go, enumerated constants are created using the iota enumerator. Since iota can be part of an expression and expressions can be implicitly repeated, it is easy to build intricate sets of values.
+
+    ```
+    type ByteSize float64
+
+    const (
+        _           = iota // iota = 0, ignore first value by assigning to blank identifier
+        KB ByteSize = 1 << (10 * iota) // iota = 1
+        MB // = 1 << (10 * iota) , iota = 2
+        GB
+        TB
+        PB
+        EB
+        ZB
+        YB
+    )
+    ```
+
+    The ability to attach a method such as String to any user-defined type makes it possible for arbitrary values to format themselves automatically for printing. Although you'll see it most often applied to structs, this technique is also useful for scalar types such as floating-point types like ByteSize.
+
+    ```
+    func (b ByteSize) String() string {
+        switch {
+        case b >= YB:
+            return fmt.Sprintf("%.2fYB", b/YB)
+        case b >= ZB:
+            return fmt.Sprintf("%.2fZB", b/ZB)
+        case b >= EB:
+            return fmt.Sprintf("%.2fEB", b/EB)
+        case b >= PB:
+            return fmt.Sprintf("%.2fPB", b/PB)
+        case b >= TB:
+            return fmt.Sprintf("%.2fTB", b/TB)
+        case b >= GB:
+            return fmt.Sprintf("%.2fGB", b/GB)
+        case b >= MB:
+            return fmt.Sprintf("%.2fMB", b/MB)
+        case b >= KB:
+            return fmt.Sprintf("%.2fKB", b/KB)
+        }
+        return fmt.Sprintf("%.2fB", b)
+    }
+    ```
     
