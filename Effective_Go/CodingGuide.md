@@ -998,12 +998,12 @@
     Without that ..., it wouldn't compile because the types would be wrong; y is not of type int.
 
 
-6. Initialization
+7. Initialization
 
-Complex structures can be built during initialization and the ordering issues among initialized objects, even among different packages, are handled correctly.
+    Complex structures can be built during initialization and the ordering issues among initialized objects, even among different packages, are handled correctly.
 
 
-    6.1. Constants
+    7.1. Constants
 
     Constants in Go are just that—constant. They are created at compile time, even when defined as locals in functions, and can only be numbers, characters (runes), strings or booleans. Because of the compile-time restriction, the expressions that define them must be constant expressions, evaluatable by the compiler. For instance, 1<<3 is a constant expression, while math.Sin(math.Pi/4) is not because the function call to math.Sin needs to happen at run time.
 
@@ -1051,3 +1051,55 @@ Complex structures can be built during initialization and the ordering issues am
     }
     ```
     
+
+    The expression YB prints as 1.00YB, while ByteSize(1e13) prints as 9.09TB.
+
+    The use here of Sprintf to implement ByteSize's String method is safe (avoids recurring indefinitely) not because of a conversion but because it calls Sprintf with %f, which is not a string format: Sprintf will only call the String method when it wants a string, and %f wants a floating-point value.
+
+
+
+    7.2. Variables
+
+    Variables can be initialized just like constants but the initializer can be a general expression computed at run time.
+
+    ```
+    var (
+        home   = os.Getenv("HOME")
+        user   = os.Getenv("USER")
+        gopath = os.Getenv("GOPATH")
+    )
+    ```
+
+    7.3. The init function
+
+    Finally, each source file can define its own niladic init function to set up whatever state is required. (Actually each file can have multiple init functions.) And finally means finally: init is called after all the variable declarations in the package have evaluated their initializers, and those are evaluated only after all the imported packages have been initialized.
+
+    Besides initializations that cannot be expressed as declarations, a common use of init functions is to verify or repair correctness of the program state before real execution begins.
+
+    ```
+    func init() {
+        if user == "" {
+            log.Fatal("$USER not set")
+        }
+        if home == "" {
+            home = "/home/" + user
+        }
+        if gopath == "" {
+            gopath = home + "/go"
+        }
+        // gopath may be overridden by --gopath flag on command line.
+        flag.StringVar(&gopath, "gopath", gopath, "override default GOPATH")
+    }
+    ```
+
+
+8. Methods
+
+    8.1. Pointers vs. Values
+
+    As we saw with ByteSize, methods can be defined for any named type (except a pointer or an interface); the receiver does not have to be a struct.
+
+    In the discussion of slices above, we wrote an Append function. We can define it as a method on slices instead. To do this, we first declare a named type to which we can bind the method, and then make the receiver for the method a value of that type.
+
+    
+

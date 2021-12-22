@@ -4,23 +4,29 @@ import (
 	"fmt"
 )
 
-type ByteSize float64
+type ByteSlice []byte
 
-const (
-    _           = iota // iota = 0, ignore first value by assigning to blank identifier
-    KB ByteSize = 1 << (10 * iota) // iota = 1
-    MB // = 1 << (10 * iota) , iota = 2
-    GB
-    TB
-    PB
-    EB
-    ZB
-    YB
-)
+func (slice ByteSlice) Append1(data []byte) []byte {
+    return append(slice, data...)
+}
+
+func (p *ByteSlice) Append2(data []byte) {
+    slice := *p
+    slice = append(slice, data...)
+    *p = slice
+}
 
 func main() {
-	x := []int{1,2,3}
-	y := []int{4,5,6}
-	x = append(x, y...)
-	fmt.Println(x)
+	var x ByteSlice = []byte{1, 2, 3}
+	var y ByteSlice = []byte{4, 5, 6}
+	
+	fmt.Printf("append = %x \n", x.Append1(y))
+	fmt.Printf("x = %x \n", x)
+	fmt.Printf("y = %x \n", y)
+
+
+    x.Append2(y)
+
+    fmt.Printf("new x = %x", x)
 }
+
