@@ -2,28 +2,33 @@ package main
 
 import (
 	"fmt"
-	"io"
 )
 
-type Sequence []int
-
-func (s Sequence) Len() int {
-	return len(s)
+type Stringer interface {
+	String() string
 }
 
-func (s Sequence) Less(i, j int) bool {
-	return s[i] < s[j]
-}
+func String(value interface{}) string {
+	if str, ok := value.(string); ok {
+		return str
+	} else if str, ok := value.(Stringer); ok {
+		return str.String()
+	}
 
-func (s Sequence) Swap(i, j int) {
-	s[i], s[j] = s[j], s[i]
-}
-
-func(s Sequence) Copy() Sequence {
-	copy := make(Sequence, 0, len(s))
-	return append(copy, s...)
+	return ""
 }
 
 func main() {
-	
+	var value interface{}
+	value = "abe"
+
+
+	str, ok := value.(string)
+	if ok {
+		fmt.Printf("string value is: %q\n", str)
+	} else {
+		fmt.Printf("value is not a string\n")
+	}
+
+	fmt.Println(String(value))
 }
