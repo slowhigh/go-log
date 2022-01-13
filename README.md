@@ -1,3 +1,3 @@
-# go-tutorial
+# go-study
 
 The first step in golang.
