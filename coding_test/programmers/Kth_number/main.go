@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"sort"
 )
 
 // 문제 설명
@@ -28,12 +29,21 @@ import (
 // [1, 5, 2, 6, 3, 7, 4]를 1번째부터 7번째까지 자릅니다. [1, 2, 3, 4, 5, 6, 7]의 세 번째 숫자는 3입니다.
 
 func solution(array []int, commands [][]int) []int {
-    return []int{}
+	result := []int {}
+
+	for _, v := range commands {
+		slice := make([]int, v[1]- v[0] + 1)
+		copy(slice, array[v[0]-1:v[1]]) 
+		sort.Ints(slice)
+		result = append(result, slice[v[2]-1])
+	}
+
+	return result
 }
 
 func main() {
-	array := []int {1, 5, 2, 6, 3, 7, 4}
-	commands := [][]int {{2, 5, 3}, {4, 4, 1 }, {1, 7, 3}}
+	array := []int{1, 5, 2, 6, 3, 7, 4}
+	commands := [][]int{{2, 5, 3}, {4, 4, 1}, {1, 7, 3}}
 
 	fmt.Print(solution(array, commands))
 }
