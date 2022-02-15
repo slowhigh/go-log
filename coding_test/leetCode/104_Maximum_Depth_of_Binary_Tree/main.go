@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"math"
 )
 
 // Given the root of a binary tree, return its maximum depth.
@@ -41,24 +40,14 @@ func maxDepth(root *TreeNode) int {
 		return 0
 	}
 
-    return int(getDepth(root, 1))
-}
+	leftDepth := maxDepth(root.Left) + 1
+	rightDepth := maxDepth(root.Right) + 1
 
-func getDepth(root *TreeNode, parentDepth float64) float64 {
-    leftDepth := parentDepth
-	rightDepth := parentDepth
-
-	if root.Left != nil {
-		leftDepth++
-		leftDepth = getDepth(root.Left, leftDepth)
+    if leftDepth > rightDepth {
+		return leftDepth
+	} else {
+		return rightDepth
 	}
-
-	if root.Right != nil {
-		rightDepth++
-		rightDepth = getDepth(root.Right, rightDepth)
-	}
-    
-    return math.Max(leftDepth, rightDepth)
 }
 
 func main() {
