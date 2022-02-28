@@ -59,26 +59,47 @@ type Node struct {
 	Neighbors []*Node
 }
 
-const (
-	right = 0
-	left  = 1
-)
-
 func cloneGraph(node *Node) *Node {
 	if node == nil {
-		return node
+		return nil
 	} else if node.Neighbors == nil {
 		return &(Node{Val: node.Val})
-	} else if len(node.Neighbors) == 1 {
-		curr := Node{Val: node.Val}
-		next := Node{Val: node.Neighbors[right].Val}
-		curr.Neighbors = []*Node{&next}
-		next.Neighbors = []*Node{&curr}
-		return &curr
 	}
 
 	nodeMap := make(map[int]*Node)
+	newNodeMap := make(map[int]*Node)
+
+	queue := make([]*Node, 0)
+
+	for curNode := node; ; {
+		if _, isExisted := nodeMap[curNode.Val]; !isExisted {
+			nodeMap[curNode.Val] = curNode
+			queue = append(queue, curNode.Neighbors...)
+		}
+
+		if len(queue) == 0 {
+			break
+		}
+
+		curNode = queue[0]
+		queue = queue[1:]
+	}
+
+	for key, value := range nodeMap {
+		newNodeMap[key] = &Node{Val: key, Neighbors: make([]*Node, len(value.Neighbors))}
+	}
+
+	for key, value := range nodeMap {
+		for index, neighbor := range value.Neighbors {
+			newNodeMap[key].Neighbors[index] = newNodeMap[neighbor.Val]
+		}
+	}
+
+	return newNodeMap[node.Val]
 }
+
+// 깊이 우선 탐색 DFS, Depth-First Search
+// 너비 우선 탐색 BFS, Breadth-First Search
 
 // [[2,3,4],[1,3,4],[1,2,4],[1,2,3]]
 
@@ -111,4 +132,5 @@ func main() {
 	}
 
 	fmt.Println(cloneGraph(&node1))
+	fmt.Println(cloneGraph2(&node1))
 }
