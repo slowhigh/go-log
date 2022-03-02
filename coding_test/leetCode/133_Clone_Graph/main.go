@@ -132,5 +132,4 @@ func main() {
 	}
 
 	fmt.Println(cloneGraph(&node1))
-	fmt.Println(cloneGraph2(&node1))
 }
