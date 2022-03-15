@@ -1,9 +1,5 @@
 package remove_covered_intervals_1288
 
-import (
-	"fmt"
-)
-
 func removeCoveredIntervals(intervals [][]int) int {
 	count := 0
 	intervalLen := len(intervals)
@@ -35,12 +31,4 @@ func removeCoveredIntervals(intervals [][]int) int {
 	}
 
 	return count
-}
-
-func main() {
-	intervals := [][]int{{1, 4}, {3, 6}, {2, 8}}
-	intervals2 := [][]int{{1, 4}, {2, 3}}
-
-	fmt.Println(removeCoveredIntervals(intervals))
-	fmt.Println(removeCoveredIntervals(intervals2))
 }
