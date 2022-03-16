@@ -1,40 +1,18 @@
 package maximum_subarray_53
 
-import "math"
-
 func maxSubArray(nums []int) int {
-    max := 0
+    max, sum := nums[0], nums[0]
     
-    var maxSum func(subArr []int, isLeft bool) int
-
-    maxSum = func(subArr []int, isLeft bool) int {
-        subArrLen := len(subArr)
-
-        if subArrLen == 1 {
-            return subArr[0]
+    for i := 1; i < len(nums); i++ {
+        sum += nums[i]
+        if sum < nums[i] {
+            sum = nums[i]
         }
 
-        mid := int(subArrLen / 2)
-
-        leftSum := maxSum(subArr[:mid], true)
-        rightSum := maxSum(subArr[mid + 1:], false)
-        totalSum := leftSum + rightSum
-
-        subMax := int(math.Max(math.Max(float64(leftSum), float64(rightSum)), float64(totalSum)))
-
-        if max < subMax {
-            max = subMax
-        }
-
-        if isLeft && {
-            return rightSum
+        if max < sum {
+            max = sum
         }
     }
 
-    maxSum(nums, true)
-    
-    
-    
-    
     return max
 }
