@@ -15,19 +15,21 @@ func threeSum(nums []int) [][]int {
 	for _, num := range nums {
 		keys := make([]int, 0, len(threeSumItemMap))
 		for k := range threeSumItemMap {
+			if threeSumItemMap[k].len >= 3 {
+				continue
+			}
+
 			keys = append(keys, k)
 		}
 
 		for key := range keys {
 			newThreeSumItem := threeSumItem{}
+			newThreeSumItem.nums.
 			newThreeSumItem.nums = append(threeSumItemMap[key].nums, num)
 			newThreeSumItem.len = threeSumItemMap[key].len + 1
 			newThreeSumItem.sum = threeSumItemMap[key].sum + num
 
-			if newThreeSumItem.len < 3 {
-				threeSumItemMap[len(threeSumItemMap)] = newThreeSumItem
-				continue
-			}
+			threeSumItemMap[len(threeSumItemMap)] = newThreeSumItem
 
 			if newThreeSumItem.sum == 0 {
 				sort.Ints(newThreeSumItem.nums)
