@@ -1,43 +1,51 @@
 package three_sum_15
 
-import "sort"
-
-type threeSumItem struct {
-	nums []int
-	len  int
-	sum  int
-}
+import (
+	"sort"
+)
 
 func threeSum(nums []int) [][]int {
-	threeSumItemMap := make(map[int]threeSumItem)
+	numsLen := len(nums)
 	result := [][]int{}
+	sort.Ints(nums)
 
-	for _, num := range nums {
-		keys := make([]int, 0, len(threeSumItemMap))
-		for k := range threeSumItemMap {
-			if threeSumItemMap[k].len >= 3 {
+	if numsLen < 3 {
+		return [][]int{}
+	} else if numsLen == 3 {
+		if nums[0]+nums[1]+nums[2] == 0 {
+			return [][]int{{nums[0], nums[1], nums[2]}}
+		}
+		return [][]int{}
+	}
+
+	for pivot := 0; pivot < numsLen-2; pivot++ {
+		if pivot > 0 && nums[pivot] == nums[pivot-1] {
+			continue
+		}
+
+		left, right := pivot+1, numsLen-1
+
+		for left < right {
+			if left > pivot+1 && nums[left] == nums[left-1] {
+				left++
+				continue
+			} else if right < numsLen-1 && nums[right] == nums[right+1] {
+				right--
 				continue
 			}
 
-			keys = append(keys, k)
-		}
+			sum := nums[pivot] + nums[left] + nums[right]
 
-		for key := range keys {
-			newThreeSumItem := threeSumItem{}
-			newThreeSumItem.nums.
-			newThreeSumItem.nums = append(threeSumItemMap[key].nums, num)
-			newThreeSumItem.len = threeSumItemMap[key].len + 1
-			newThreeSumItem.sum = threeSumItemMap[key].sum + num
-
-			threeSumItemMap[len(threeSumItemMap)] = newThreeSumItem
-
-			if newThreeSumItem.sum == 0 {
-				sort.Ints(newThreeSumItem.nums)
-				result = append(result, newThreeSumItem.nums)
+			if sum == 0 {
+				result = append(result, []int{nums[pivot], nums[left], nums[right]})
+				left++
+				right--
+			} else if sum < 0 {
+				left++
+			} else { // sum > 0
+				right--
 			}
 		}
-
-		threeSumItemMap[len(threeSumItemMap)] = threeSumItem{nums: []int{num}, len: 1, sum: num}
 	}
 
 	return result
