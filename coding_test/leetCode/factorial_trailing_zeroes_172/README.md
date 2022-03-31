@@ -27,7 +27,7 @@ Output: 0
 ```
 
 ## Constraints
-- 0 <= n <= 104
+- 0 <= n <= 10^4
  
 ## Follow up
 Could you write a solution that works in logarithmic time complexity?
