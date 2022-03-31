@@ -23,5 +23,5 @@ Output: 1
 ## Constraints
 - 1 <= intervals.length <= 1000
 - intervals[i].length == 2
-- 0 <= li < ri <= 105
+- 0 <= li < ri <= 10^5
 - All the given intervals are unique.
