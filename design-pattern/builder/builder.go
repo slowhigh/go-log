@@ -1,72 +1,65 @@
 package builder
 
-type BuilderProcess interface {
-	SetWheels() BuilderProcess
-	SetSeats() BuilderProcess
-	SetStructure() BuilderProcess
-	GetVehicle() VehicleProduct
+type vehicle struct {
+	structure string
+	wheels    int
+	seats     int
 }
 
-type ManufacturingDirector struct {
-	builder BuilderProcess
+type Vehicle interface {
+	GetStructure() string
+	GetWheels() int
+	GetSeats() int
 }
 
-func (f *ManufacturingDirector) Construct() {
-	f.builder.SetSeats().SetStructure().SetWheels()
+func (v *vehicle) GetStructure() string {
+	return v.structure
 }
 
-func (f *ManufacturingDirector) SetBuilder(b BuilderProcess) {
-	f.builder = b
+func (v *vehicle) GetWheels() int {
+	return v.wheels
 }
 
-type VehicleProduct struct {
-	Wheels    int
-	Seats     int
-	Structure string
+func (v *vehicle) GetSeats() int {
+	return v.seats
 }
 
-type CarBuilder struct {
-	v VehicleProduct
+type vehicleBuilder struct {
+	structure string
+	wheels    int
+	seats     int
 }
 
-func (c *CarBuilder) SetStructure() BuilderProcess {
-	c.v.Structure = "Car"
-	return c
+type VehicleBuilder interface {
+	SetStructure(structure string) VehicleBuilder
+	SetWheels(wheels int) VehicleBuilder
+	SetSeats(seats int) VehicleBuilder
+	Build() Vehicle
 }
 
-func (c *CarBuilder) GetVehicle() VehicleProduct {
-	return c.v
+func (vb *vehicleBuilder) SetStructure(structure string) VehicleBuilder {
+	vb.structure = structure
+	return vb
 }
 
-func (c *CarBuilder) SetWheels() BuilderProcess {
-	c.v.Wheels = 4
-	return c
+func (vb *vehicleBuilder) SetWheels(wheels int) VehicleBuilder {
+	vb.wheels = wheels
+	return vb
 }
 
-func (c *CarBuilder) SetSeats() BuilderProcess {
-	c.v.Seats = 5
-	return c
+func (vb *vehicleBuilder) SetSeats(seats int) VehicleBuilder {
+	vb.seats = seats
+	return vb
 }
 
-type BikeBuilder struct {
-	v VehicleProduct
+func (vb *vehicleBuilder) Build() Vehicle {
+	return &vehicle{
+		structure: vb.structure,
+		wheels:    vb.wheels,
+		seats:     vb.seats,
+	}
 }
 
-func (b *BikeBuilder) SetWheels() BuilderProcess {
-	b.v.Wheels = 2
-	return b
-}
-
-func (b *BikeBuilder) SetSeats() BuilderProcess {
-	b.v.Seats = 2
-	return b
-}
-
-func (b *BikeBuilder) SetStructure() BuilderProcess {
-	b.v.Structure = "Motorbike"
-	return b
-}
-
-func (b *BikeBuilder) GetVehicle() VehicleProduct {
-	return b.v
+func New() VehicleBuilder {
+	return &vehicleBuilder{}
 }

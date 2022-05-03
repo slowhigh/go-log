@@ -2,45 +2,40 @@ package builder
 
 import "testing"
 
+type testCase struct {
+	structure string
+	wheels    int
+	seats     int
+}
+
 func TestBuilderPattern(t *testing.T) {
-
-	// 싱글톤으로 manufactor를 만들면 글로벌하게 사용이 가능하다.
-	manufacturingComplex := ManufacturingDirector{}
-
-	carBuilder := &CarBuilder{}
-	manufacturingComplex.SetBuilder(carBuilder)
-	manufacturingComplex.Construct()
-
-	car := carBuilder.GetVehicle()
-
-	if car.Wheels != 4 {
-		t.Errorf("Wheels on a car must be 4 and they were %d\n", car.Wheels)
+	testCaseArr := []testCase{
+		{
+			structure: "Car",
+			wheels:    4,
+			seats:     5,
+		},
+		{
+			structure: "Bike",
+			wheels:    2,
+			seats:     1,
+		},
 	}
 
-	if car.Structure != "Car" {
-		t.Errorf("Structure on a car must be 'Car' and was %s\n", car.Structure)
+	for i, tc := range testCaseArr {
+		vehicle := New()
+		buildedVehicle := vehicle.SetStructure(tc.structure).SetWheels(tc.wheels).SetSeats(tc.seats).Build()
+
+		if buildedVehicle.GetStructure() != tc.structure {
+			t.Errorf("Wrong structure. - %d", i)
+		}
+
+		if buildedVehicle.GetWheels() != tc.wheels {
+			t.Errorf("Wrong wheels. - %d", i)
+		}
+
+		if buildedVehicle.GetSeats() != tc.seats {
+			t.Errorf("Wrong seats. - %d", i)
+		}
 	}
-
-	if car.Seats != 5 {
-		t.Errorf("Seats on a car must be 5 and they were %d\n", car.Seats)
-	}
-
-	bikeBuilder := &BikeBuilder{}
-	manufacturingComplex.SetBuilder(bikeBuilder)
-	manufacturingComplex.Construct()
-
-	bike := bikeBuilder.GetVehicle()
-
-	if bike.Wheels != 2 {
-		t.Errorf("Wheels on a bike must be 2 and they were %d\n", bike.Wheels)
-	}
-
-	if bike.Structure != "Motorbike" {
-		t.Errorf("Structure on a bike must be 'Motorbike' and was %s\n", bike.Structure)
-	}
-
-	if bike.Seats != 2 {
-		t.Errorf("Seats on a bike must be 2 and they were %d\n", bike.Seats)
-	}
-
 }
