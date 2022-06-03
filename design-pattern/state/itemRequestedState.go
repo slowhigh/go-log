@@ -1,23 +1,26 @@
 // Concrete state
 package state
 
-import "fmt"
+import (
+	"errors"
+	"fmt"
+)
 
 type itemRequestedState struct {
 	vendingMachine *vendingMachine
 }
 
 func (i *itemRequestedState) requestItem() error {
-	return fmt.Errorf("Item already requested")
+	return errors.New("item already requested")
 }
 
 func (i *itemRequestedState) addItem(count int) error {
-	return fmt.Errorf("Item Dispense")
+	return errors.New("item Dispense")
 }
 
 func (i *itemRequestedState) insertMoney(money int) error {
 	if money < i.vendingMachine.itemPrice {
-		fmt.Errorf("Inserted money is less. Please insert %d", i.vendingMachine.itemPrice)
+		return fmt.Errorf("inserted money is less. please insert %d", i.vendingMachine.itemPrice)
 	}
 
 	fmt.Println("Money entered is ok")
@@ -26,5 +29,5 @@ func (i *itemRequestedState) insertMoney(money int) error {
 }
 
 func (i *itemRequestedState) dispenseItem() error {
-	return fmt.Errorf("Please insert money first")
+	return errors.New("please insert money first")
 }

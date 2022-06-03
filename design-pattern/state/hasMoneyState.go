@@ -1,22 +1,25 @@
 // Concrete state
 package state
 
-import "fmt"
+import (
+	"fmt"
+	"errors"
+)
 
 type hasMoneyState struct {
 	vendingMachine *vendingMachine
 }
 
 func (i *hasMoneyState) requestItem() error {
-	return fmt.Errorf("Item dispense in progress")
+	return errors.New("item dispense in progress")
 }
 
 func (i *hasMoneyState) addItem(count int) error {
-	return fmt.Errorf("Item dispense in progress")
+	return errors.New("item dispense in progress")
 }
 
 func (i *hasMoneyState) insertMoney(money int) error {
-	return fmt.Errorf("Item out of stock")
+	return errors.New("item out of stock")
 }
 
 func (i *hasMoneyState) dispenseItem() error {

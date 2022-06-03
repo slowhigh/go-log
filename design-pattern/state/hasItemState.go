@@ -1,7 +1,10 @@
 // Concrete state
 package state
 
-import "fmt"
+import (
+	"errors"
+	"fmt"
+)
 
 type hasItemState struct {
 	vendingMachine *vendingMachine
@@ -10,7 +13,7 @@ type hasItemState struct {
 func (i *hasItemState) requestItem() error {
 	if i.vendingMachine.itemCount == 0 {
 		i.vendingMachine.setState(i.vendingMachine.noItem)
-		return fmt.Errorf("No item present")
+		return errors.New("no item present")
 	}
 
 	fmt.Println("Item requested")
@@ -25,9 +28,9 @@ func (i *hasItemState) addItem(count int) error {
 }
 
 func (i *hasItemState) insertMoney(money int) error {
-	return fmt.Errorf("Please select item first")
+	return errors.New("please select item first")
 }
 
 func (i *hasItemState) dispenseItem() error {
-	return fmt.Errorf("Please select item first")
+	return errors.New("please select item first")
 }
