@@ -1,0 +1,10 @@
+// Concrete strategy
+package strategy
+
+import "fmt"
+
+type fifo struct {}
+
+func (l *fifo) evict(c *cache) {
+	fmt.Println("Evicting by fifo strategy")
+}
