@@ -1,6 +1,8 @@
 // Context
 package strategy
 
+import "time"
+
 type cache struct {
 	storage      map[string]data
 	evictionAlgo evictionAlgo
@@ -11,10 +13,10 @@ type cache struct {
 func initCache(e evictionAlgo, maxCapacity int) *cache {
 	storage := make(map[string]data)
 	return &cache{
-		storage: storage,
+		storage:      storage,
 		evictionAlgo: e,
-		capacity: 0,
-		maxCapacity: maxCapacity,
+		capacity:     0,
+		maxCapacity:  maxCapacity,
 	}
 }
 
@@ -26,6 +28,9 @@ func (c *cache) add(key string, value data) {
 	if c.capacity == c.maxCapacity {
 		c.evict()
 	}
+
+	time.Sleep(1000)
+	value.registeredTime = time.Now().UnixNano()
 	c.capacity++
 	c.storage[key] = value
 }
@@ -40,7 +45,7 @@ func (c *cache) evict() {
 }
 
 func (c *cache) contains(key string) bool {
-	_, ok := c.storage[key];
+	_, ok := c.storage[key]
 
 	return ok
 }

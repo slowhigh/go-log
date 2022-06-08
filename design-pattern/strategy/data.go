@@ -1,6 +1,7 @@
 package strategy
 
 type data struct {
-	waitingTime  int
-	frequencyUse int
+	registeredTime int64
+	waitingTime    int
+	usedCount      int
 }

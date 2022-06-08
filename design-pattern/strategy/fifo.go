@@ -1,10 +1,24 @@
 // Concrete strategy
 package strategy
 
-import "fmt"
+import "log"
 
-type fifo struct {}
+type fifo struct{}
 
 func (l *fifo) evict(c *cache) {
-	fmt.Println("Evicting by fifo strategy")
+	evictedDataKey := ""
+
+	for key, data := range c.storage {
+		if evictedDataKey == "" {
+			evictedDataKey = key
+			continue
+		}
+
+		if data.registeredTime < c.storage[evictedDataKey].registeredTime {
+			evictedDataKey = key
+		}
+	}
+
+	delete(c.storage, evictedDataKey)
+	log.Printf("Evict '%s' data.", evictedDataKey)
 }
