@@ -1,3 +1,3 @@
-module codingtest
+module internal
 
 go 1.17

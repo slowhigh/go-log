@@ -1,4 +1,4 @@
-module codingTest
+module numberstringandenglishword
 
 go 1.16
 
