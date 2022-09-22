@@ -6,8 +6,7 @@ func solution(n int) int {
 
     for i := 1; i < n; i++ {
         c = (a + b)%1234567
-        a = b
-        b = c
+        a, b = b, c
     }
 
 	return c
