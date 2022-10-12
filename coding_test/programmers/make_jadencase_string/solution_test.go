@@ -10,7 +10,7 @@ type testCase struct {
 }
 
 func Test_solution(t *testing.T) {
-	testCaseArr := []testCase {
+	testCaseArr := []testCase{
 		{
 			s: "3people  unFollowed     me",
 			r: "3people  Unfollowed     Me",

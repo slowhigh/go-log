@@ -15,7 +15,7 @@ func solution(s string) int {
 	for i := 0; i < lenS; i++ {
 		stack := make([]string, 0)
 
-		for j := i; j < lenS + i; j++ {
+		for j := i; j < lenS+i; j++ {
 			target := sArr[j%lenS]
 			if target == "[" || target == "{" || target == "(" {
 				stack = append(stack, target)

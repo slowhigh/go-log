@@ -9,15 +9,15 @@ type testCase struct {
 }
 
 func Test_solution(t *testing.T) {
-	testCaseArr := []testCase {
+	testCaseArr := []testCase{
 		{
-			[]string { "AN", "CF", "MJ", "RT", "NA" },
-			[]int { 5, 3, 2, 7, 5 },
+			[]string{"AN", "CF", "MJ", "RT", "NA"},
+			[]int{5, 3, 2, 7, 5},
 			"TCMA",
 		},
 		{
-			[]string { "TR", "RT", "TR" },
-			[]int { 7, 1, 3 },
+			[]string{"TR", "RT", "TR"},
+			[]int{7, 1, 3},
 			"RCJA",
 		},
 	}

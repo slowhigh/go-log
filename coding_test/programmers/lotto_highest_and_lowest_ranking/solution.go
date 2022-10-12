@@ -1,10 +1,4 @@
-package main
-
-//max, min := 0, 0 변수 한줄 초기화
-
-import (
-	"fmt"
-)
+package lotto_highest_and_lowest_ranking
 
 func solution(lottos []int, win_nums []int) []int {
 	max, min := 0, 0
@@ -39,12 +33,4 @@ func solution(lottos []int, win_nums []int) []int {
 	}
 
 	return []int{7 - max, 7 - min}
-}
-
-func main() {
-
-	a := []int{44, 1, 0, 0, 31, 25}
-	b := []int{31, 10, 45, 1, 6, 19}
-
-	fmt.Println(solution(a, b))
 }

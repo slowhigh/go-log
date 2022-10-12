@@ -5,7 +5,7 @@ func solution(arr []int) int {
 	var tempArr []int
 
 	for i := 2; ; {
-	    breakCount := 0
+		breakCount := 0
 		tempArr = make([]int, len(arr))
 		divCount := 0
 
@@ -18,8 +18,8 @@ func solution(arr []int) int {
 				divCount++
 				tempArr[j] = arr[j] / i
 			} else {
-                tempArr[j] = arr[j]
-            }
+				tempArr[j] = arr[j]
+			}
 		}
 
 		if breakCount < 2 {

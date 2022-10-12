@@ -11,9 +11,9 @@ func solution(arr1 [][]int, arr2 [][]int) [][]int {
 	for i := 0; i < x; i++ {
 		multiArr[i] = make([]int, y)
 		for j := 0; j < y; j++ {
-            for k := 0; k < z; k++ {
-                multiArr[i][j] += arr1[i][k]*arr2[k][j]
-            }
+			for k := 0; k < z; k++ {
+				multiArr[i][j] += arr1[i][k] * arr2[k][j]
+			}
 		}
 	}
 

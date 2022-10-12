@@ -8,13 +8,13 @@ type testCase struct {
 }
 
 func Test_solution(t *testing.T) {
-	testCaseArr := []testCase {
+	testCaseArr := []testCase{
 		{
-			n: 10,
+			n:      10,
 			result: 3,
 		},
 		{
-			n: 12,
+			n:      12,
 			result: 11,
 		},
 	}
