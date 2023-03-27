@@ -1,3 +1,5 @@
+# Effective Go
+
 - [1. Commentary](#1-commentary)
 - [2. Names](#2-names)
     - [2.1. Package names](#21-package-names)
