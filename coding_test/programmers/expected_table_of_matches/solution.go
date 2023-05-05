@@ -1,26 +1,22 @@
 package expected_table_of_matches
 
-import (
-	"math"
-)
-
 func solution(n int, a int, b int) int {
-	depth := int(math.Log2(float64(n)))
-	left, right := 1, n
-	var center int
+	count := 1
 
 	for {
-		center = ((right - left - 1) / 2) + left
-		if (a <= center && center < b) || (b <= center && center < a) {
-			break
-		} else if a <= center && b <= center {
-			right = center
-			depth--
-		} else if center < a && center < b {
-			left = center + 1
-			depth--
+		if a%2 == 1 {
+			a++
 		}
+		if b%2 == 1 {
+			b++
+		}
+		if a == b {
+			break
+		}
+		count++
+		a /= 2
+		b /= 2
 	}
 
-	return depth
+	return count
 }
