@@ -14,7 +14,7 @@ func solution(left int, right int) int {
 	for i := left; i <= right; i++ {
 		sqrt := math.Sqrt(float64(i))
 
-		if sqrt == math.Floor(sqrt) {
+		if math.Mod(sqrt, 1) == 0 {
 			sum -= i
 		} else {
 			sum += i
