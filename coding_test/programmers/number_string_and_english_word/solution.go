@@ -19,6 +19,7 @@ func solution2(s string) int {
 		"nine", "9",
 	)
 	i, _ := strconv.Atoi(f.Replace(s))
+	strings.re
 	return i
 }
 
