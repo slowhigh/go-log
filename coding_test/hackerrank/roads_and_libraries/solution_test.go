@@ -10,7 +10,7 @@ type testCase struct {
 	result int64
 }
 
-func Test_solution(t *testing.T) {
+func Test_roadsAndLibraries(t *testing.T) {
 	testCaseArr := []testCase{
 		{
 			n:      3,
