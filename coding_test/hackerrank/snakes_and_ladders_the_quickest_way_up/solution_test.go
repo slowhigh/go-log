@@ -11,6 +11,26 @@ type testCase struct {
 func Test_quickestWayUp(t *testing.T) {
 	testCaseArr := []testCase{
 		{
+			ladders: [][]int32{{3, 90}},
+			snakes:  [][]int32{{99, 10}, {97, 20}, {98, 30}, {96, 40}, {95, 50}, {94, 60}, {93, 70}},
+			result:  2,
+		},
+		{
+			ladders: [][]int32{{3, 54}, {37, 100}},
+			snakes:  [][]int32{{56, 33}},
+			result:  3,
+		},
+		{
+			ladders: [][]int32{{3, 57}, {8, 100}},
+			snakes:  [][]int32{{88, 44}},
+			result:  2,
+		},
+		{
+			ladders: [][]int32{{7, 98}},
+			snakes:  [][]int32{{99, 1}},
+			result:  2,
+		},
+		{
 			ladders: [][]int32{{32, 62}, {42, 68}, {12, 98}},
 			snakes:  [][]int32{{95, 13}, {97, 25}, {93, 37}, {79, 27}, {75, 19}, {49, 47}, {67, 17}},
 			result:  3,
