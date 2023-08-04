@@ -13,7 +13,7 @@ func Test_quickestWayUp(t *testing.T) {
 		{
 			ladders: [][]int32{{3, 90}},
 			snakes:  [][]int32{{99, 10}, {97, 20}, {98, 30}, {96, 40}, {95, 50}, {94, 60}, {93, 70}},
-			result:  2,
+			result:  -1,
 		},
 		{
 			ladders: [][]int32{{3, 54}, {37, 100}},
