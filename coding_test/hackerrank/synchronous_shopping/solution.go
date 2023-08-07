@@ -6,6 +6,12 @@ import (
 	"strings"
 )
 
+/**
+ * Synchronous Shopping
+ *
+ * https://www.hackerrank.com/challenges/synchronous-shopping/problem?isFullScreen=false
+ **/
+
 type queueItem struct {
 	centerName int32
 	fishSum    int32
