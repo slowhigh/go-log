@@ -1,5 +1,11 @@
 package journey_to_the_moon
 
+/*
+ * Journey to the Moon
+ *
+ * https://www.hackerrank.com/challenges/journey-to-the-moon/problem?isFullScreen=false
+ */
+
 func journeyToMoon(n int32, astronaut [][]int32) int64 {
     if n == 1 {
         return 0
