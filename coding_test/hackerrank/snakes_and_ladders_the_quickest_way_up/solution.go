@@ -1,5 +1,11 @@
 package snakes_and_ladders_the_quickest_way_up
 
+/**
+ * Snakes and Ladders: The Quickest Way Up
+ *
+ * https://www.hackerrank.com/challenges/the-quickest-way-up/problem?isFullScreen=false
+ **/
+
 func quickestWayUp(ladders [][]int32, snakes [][]int32) int32 {
 	edgeMap := make(map[int32]int32)
 	distArr := make([]int32, 101)
