@@ -1,6 +1,8 @@
 package the_story_of_a_tree
 
-import "fmt"
+import (
+	"fmt"
+)
 
 /**
  * The Story of a Tree
@@ -8,10 +10,15 @@ import "fmt"
  * https://www.hackerrank.com/challenges/the-story-of-a-tree/problem?isFullScreen=false
  **/
 
+type Node struct {
+	index  int32
+	weight int32
+}
+
 func storyOfATree(n int32, edges [][]int32, k int32, guesses [][]int32) string {
 	caseCountArr := make([]int32, n+1)
 	edgeArr := make([][]int32, n+1)
-	var visitedNodeArr []bool
+	guessMap := make(map[int32]map[int32]bool, 0)
 	var result string
 
 	for _, edge := range edges {
@@ -24,32 +31,47 @@ func storyOfATree(n int32, edges [][]int32, k int32, guesses [][]int32) string {
 			edgeArr[n2] = make([]int32, 0)
 		}
 
-		edgeArr[n1] = append(edgeArr[n1], n2)
-		edgeArr[n2] = append(edgeArr[n2], n1)
+		edgeArr[n1], edgeArr[n2] = append(edgeArr[n1], n2), append(edgeArr[n2], n1)
 	}
 
-	queue := make([]int32, 0)
 	for _, guess := range guesses {
-		visitedNodeArr = make([]bool, n+1)
-		parents, child := guess[0], guess[1]
-		caseCountArr[parents]++
-		visitedNodeArr[parents] = true
-
-		for _, node := range edgeArr[parents] {
-			if node != child {
-				queue = append(queue, node)
-			}
+		from, to := guess[1], guess[0]
+		if _, ok := guessMap[from]; !ok {
+			guessMap[from] = make(map[int32]bool)
 		}
 
-		for len(queue) != 0 {
-			from := queue[0]
-			queue = queue[1:]
-			caseCountArr[from]++
-			visitedNodeArr[from] = true
+		guessMap[from][to] = false
+	}
 
-			for _, to := range edgeArr[from] {
+	queue := make([]Node, 0)
+	for _, guess := range guesses {
+		from, to := guess[1], guess[0]
+
+		if guessMap[from][to] {
+			continue
+		}
+
+		guessMap[from][to] = true
+		visitedNodeArr := make([]bool, n+1)
+		visitedNodeArr[from] = true
+		queue = append(queue, Node{index: to, weight: 1})
+
+		for len(queue) != 0 {
+			fromNode := queue[0]
+			queue = queue[1:]
+			caseCountArr[fromNode.index] += fromNode.weight
+			visitedNodeArr[fromNode.index] = true
+
+			for _, to := range edgeArr[fromNode.index] {
 				if !visitedNodeArr[to] {
-					queue = append(queue, to)
+					nextNode := Node{index: to, weight: fromNode.weight}
+
+					if isPassed, ok := guessMap[fromNode.index][to]; !isPassed && ok {
+						nextNode.weight++
+						guessMap[fromNode.index][to] = true
+					}
+
+					queue = append(queue, nextNode)
 				}
 			}
 		}
