@@ -10,15 +10,10 @@ import (
  * https://www.hackerrank.com/challenges/the-story-of-a-tree/problem?isFullScreen=false
  **/
 
-type Node struct {
-	index  int32
-	weight int32
-}
-
 func storyOfATree(n int32, edges [][]int32, k int32, guesses [][]int32) string {
-	caseCountArr := make([]int32, n+1)
+	rootCanCount := int32(0)
 	edgeArr := make([][]int32, n+1)
-	guessMap := make(map[int32]map[int32]bool, 0)
+	guessMap := make(map[int32]map[int32]interface{}, 0)
 	var result string
 
 	for _, edge := range edges {
@@ -35,51 +30,44 @@ func storyOfATree(n int32, edges [][]int32, k int32, guesses [][]int32) string {
 	}
 
 	for _, guess := range guesses {
-		from, to := guess[1], guess[0]
+		from, to := guess[0], guess[1]
+
 		if _, ok := guessMap[from]; !ok {
-			guessMap[from] = make(map[int32]bool)
+			guessMap[from] = make(map[int32]interface{})
 		}
 
-		guessMap[from][to] = false
+		guessMap[from][to] = nil
 	}
 
-	queue := make([]Node, 0)
-	for _, guess := range guesses {
-		from, to := guess[1], guess[0]
-
-		if guessMap[from][to] {
-			continue
-		}
-
-		guessMap[from][to] = true
+	for i := int32(1); i <= n; i++ {
+		queue := make([]int32, 0)
 		visitedNodeArr := make([]bool, n+1)
-		visitedNodeArr[from] = true
-		queue = append(queue, Node{index: to, weight: 1})
+		queue = append(queue, i)
+		matchCount := int32(0)
 
 		for len(queue) != 0 {
-			fromNode := queue[0]
+			from := queue[0]
 			queue = queue[1:]
-			caseCountArr[fromNode.index] += fromNode.weight
-			visitedNodeArr[fromNode.index] = true
+			visitedNodeArr[from] = true
 
-			for _, to := range edgeArr[fromNode.index] {
-				if !visitedNodeArr[to] {
-					nextNode := Node{index: to, weight: fromNode.weight}
-
-					if isPassed, ok := guessMap[fromNode.index][to]; !isPassed && ok {
-						nextNode.weight++
-						guessMap[fromNode.index][to] = true
-					}
-
-					queue = append(queue, nextNode)
+			for _, to := range edgeArr[from] {
+				if visitedNodeArr[to] {
+					continue
 				}
+
+				if _, ok := guessMap[from][to]; ok {
+					matchCount++
+				}
+
+				queue = append(queue, to)
+			}
+
+			if k <= matchCount {
+				break
 			}
 		}
-	}
 
-	rootCanCount := int32(0)
-	for i := int32(1); i < n+1; i++ {
-		if k <= caseCountArr[i] {
+		if k <= matchCount {
 			rootCanCount++
 		}
 	}
