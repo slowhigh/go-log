@@ -4,16 +4,15 @@ import (
 	"fmt"
 )
 
-/**
- * The Story of a Tree
- *
- * https://www.hackerrank.com/challenges/the-story-of-a-tree/problem?isFullScreen=false
- **/
-
+// The Story of a Tree
+//
+// https://www.hackerrank.com/challenges/the-story-of-a-tree/problem?isFullScreen=false
 func storyOfATree(n int32, edges [][]int32, k int32, guesses [][]int32) string {
-	rootCanCount := int32(0)
+	caseCountArr := make([]int32, n+1)
 	edgeArr := make([][]int32, n+1)
-	guessMap := make(map[int32]map[int32]interface{}, 0)
+	guessMap := make(map[int32]map[int32]bool, 0)
+	queue := make([]int32, 0)
+	rootCanCount := int32(0)
 	var result string
 
 	for _, edge := range edges {
@@ -30,44 +29,64 @@ func storyOfATree(n int32, edges [][]int32, k int32, guesses [][]int32) string {
 	}
 
 	for _, guess := range guesses {
-		from, to := guess[0], guess[1]
+		from, to := guess[1], guess[0]
 
 		if _, ok := guessMap[from]; !ok {
-			guessMap[from] = make(map[int32]interface{})
+			guessMap[from] = make(map[int32]bool)
 		}
 
-		guessMap[from][to] = nil
+		guessMap[from][to] = true
 	}
 
-	for i := int32(1); i <= n; i++ {
-		queue := make([]int32, 0)
-		visitedNodeArr := make([]bool, n+1)
-		queue = append(queue, i)
-		matchCount := int32(0)
+	visited := make([]bool, n+1)
+	queue = append(queue, 1)
 
-		for len(queue) != 0 {
-			from := queue[0]
-			queue = queue[1:]
-			visitedNodeArr[from] = true
+	for len(queue) > 0 {
+		from := queue[0]
+		queue = queue[1:]
+		visited[from] = true
 
-			for _, to := range edgeArr[from] {
-				if visitedNodeArr[to] {
-					continue
-				}
-
-				if _, ok := guessMap[from][to]; ok {
-					matchCount++
-				}
-
-				queue = append(queue, to)
+		for _, to := range edgeArr[from] {
+			if visited[to] {
+				continue
 			}
 
-			if k <= matchCount {
-				break
+			if _, ok := guessMap[to][from]; ok {
+				caseCountArr[1]++
 			}
+
+			queue = append(queue, to)
 		}
+	}
 
-		if k <= matchCount {
+	queue = append(queue, 1)
+	visited = make([]bool, n+1)
+
+	for len(queue) > 0 {
+		from := queue[0]
+		queue = queue[1:]
+		visited[from] = true
+
+		for _, to := range edgeArr[from] {
+			if visited[to] {
+				continue
+			}
+
+			caseCountArr[to] = caseCountArr[from]
+
+			if _, ok := guessMap[from][to]; ok {
+				caseCountArr[to] += 1
+			}
+			if _, ok := guessMap[to][from]; ok {
+				caseCountArr[to] -= 1
+			}
+
+			queue = append(queue, to)
+		}
+	}
+
+	for i := int32(1); i < n+1; i++ {
+		if k <= caseCountArr[i] {
 			rootCanCount++
 		}
 	}

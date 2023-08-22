@@ -64,10 +64,12 @@ func Test_storyOfATree(t *testing.T) {
 	}
 
 	for i, tc := range testCaseArr {
-		if storyOfATree(tc.n, tc.edges, tc.k, tc.guesses) == tc.result {
+		result := storyOfATree(tc.n, tc.edges, tc.k, tc.guesses)
+
+		if result == tc.result {
 			t.Logf("PASS - %d", i)
 		} else {
-			t.Errorf("FAIL - %d", i)
+			t.Errorf("FAIL - %d (%s vs %s)", i, result, tc.result)
 		}
 	}
 }
