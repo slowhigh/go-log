@@ -1,7 +1,6 @@
 package special_subtree
 
 import (
-	"fmt"
 	"sort"
 )
 
