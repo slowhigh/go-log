@@ -1,6 +1,9 @@
 package special_subtree
 
-import "sort"
+import (
+	"fmt"
+	"sort"
+)
 
 // Prim's (MST) : Special Subtree
 //
@@ -43,12 +46,14 @@ func prims(n int32, edges [][]int32, start int32) int32 {
 		sort.Slice(priorityQueue, func(i, j int) bool { return priorityQueue[i].weight < priorityQueue[j].weight })
 		for i, node := range priorityQueue {
 			if _, ok := visitedNodeArr[node.no]; !ok {
-				from = priorityQueue[i]
+				from = Node{ no: node.no, weight: node.weight}
 				priorityQueue = priorityQueue[i+1:]
+				break
 			}
 		}
 
 		visitedNodeArr[from.no] = true
+		visitedNodeCount++
 		totalWeight += from.weight
 
 		for to, weight := range edgeMap[from.no] {
