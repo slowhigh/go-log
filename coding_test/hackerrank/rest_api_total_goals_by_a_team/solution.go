@@ -18,11 +18,11 @@ type Matches struct {
 	Team2Goals  string `json:"team2goals"`
 }
 
-type Pagination struct {
-	Page       float64   `json:"page"`
-	PerPage    float64   `json:"per_page"`
-	Total      float64   `json:"total"`
-	TotalPages float64   `json:"total_pages"`
+type FootballMatch struct {
+	Page       int64     `json:"page"`
+	PerPage    int64     `json:"per_page"`
+	Total      int64     `json:"total"`
+	TotalPages int32     `json:"total_pages"`
 	DataArr    []Matches `json:"data"`
 }
 
@@ -46,7 +46,7 @@ func GetTotalGoals(team string, year int32) int32 {
 				return 0
 			}
 
-			pn := new(Pagination)
+			pn := new(FootballMatch)
 			err = json.Unmarshal(body, &pn)
 			if err != nil {
 				return 0

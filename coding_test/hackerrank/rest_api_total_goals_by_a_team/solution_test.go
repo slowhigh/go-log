@@ -7,11 +7,13 @@ type testCase struct {
 	year  int32
 	goals int32
 }
+
 func Test_GetTotalGoals(t *testing.T) {
+	GetAllTeamTotalGoals()
 	testCaseArr := []testCase{
 		{
-			team: "Barcelona",
-			year: 2011,
+			team:  "Barcelona",
+			year:  2011,
 			goals: 35,
 		},
 	}
