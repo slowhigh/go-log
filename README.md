@@ -1,5 +1,5 @@
 <h1 align="center">
-  <b>GO STUDY</b>
+  <b>GO LOG</b>
 </h1>
 
 - [Tutorial](tutorial)
