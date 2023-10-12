@@ -25,15 +25,49 @@ type Match struct {
 	Team2Goals  string `json:"team2goals"`
 }
 
+type Result[T any] struct {
+	Data  T
+	Error error
+}
+
 func getNumDraws(year int) int {
+	matches := make([]Match, 0)
 	url := fmt.Sprintf("https://jsonmock.hackerrank.com/api/football_matches?year=%d", year)
-	matches, err := getAllData[Match](url, 1)
+
+	resp, err := http.Get(url + "&page=1")
 	if err != nil {
 		panic(err)
 	}
 
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		panic(err)
+	}
+
+	var pn Pagination[[]Match]
+	if err := json.Unmarshal(body, &pn); err != nil {
+		panic(err)
+	}
+
+	totalPage := pn.TotalPage
+	matches = append(matches, pn.Data...)
+	chArr := make(chan Result[[]Match], totalPage-1)
+
+	for i := 2; i <= totalPage; i++ {
+		go getData[Match](url, i, chArr)
+	}
+
+	for i := 2; i <= totalPage; i++ {
+		res := <-chArr
+		if res.Error != nil {
+			panic(res.Error)
+		}
+		
+		matches = append(matches, res.Data...)
+	}
+
 	drawCount := 0
-	for _, match := range *matches {
+	for _, match := range matches {
 		if match.Team1Goals == match.Team2Goals {
 			drawCount++
 		}
@@ -42,35 +76,24 @@ func getNumDraws(year int) int {
 	return drawCount
 }
 
-func getAllData[T any](url string, curPageNum int) (*([]T), error) {
+func getData[T any](url string, curPageNum int, resChan chan (Result[[]T])) {
 	resp, err := http.Get(url + fmt.Sprintf("&page=%d", curPageNum))
 	if err != nil {
-		return nil, err
+		resChan <- Result[[]T]{Data: []T{}, Error: err}
 	}
 
 	defer resp.Body.Close()
 
 	respBodyByte, err := io.ReadAll(resp.Body)
 	if err != nil {
-		return nil, err
+		resChan <- Result[[]T]{Data: []T{}, Error: err}
 	}
 
 	pageInfo := new(Pagination[[]T])
 	err = json.Unmarshal(respBodyByte, pageInfo)
 	if err != nil {
-		return nil, err
+		resChan <- Result[[]T]{Data: []T{}, Error: err}
 	}
 
-	if pageInfo.TotalPage == curPageNum {
-		return &pageInfo.Data, nil
-	}
-
-	nextPageData, err := getAllData[T](url, curPageNum+1)
-	if err != nil {
-		return nil, err
-	}
-
-	pageInfo.Data = append(pageInfo.Data, (*nextPageData)...)
-
-	return &pageInfo.Data, nil
+	resChan <- Result[[]T]{Data: pageInfo.Data, Error: nil}
 }
