@@ -9,6 +9,24 @@ import (
 	"strconv"
 )
 
+type Matches struct {
+	Competition string `json:"competition"`
+	Year        int32  `json:"year"`
+	Round       string `json:"round"`
+	Team1       string `json:"team1"`
+	Team2       string `json:"team2"`
+	Team1Goals  string `json:"team1goals"`
+	Team2Goals  string `json:"team2goals"`
+}
+
+type FootballMatch struct {
+	Page       int64     `json:"page"`
+	PerPage    int64     `json:"per_page"`
+	Total      int64     `json:"total"`
+	TotalPages int32     `json:"total_pages"`
+	DataArr    []Matches `json:"data"`
+}
+
 type Team struct {
 	Name       string
 	TotalGoals int32

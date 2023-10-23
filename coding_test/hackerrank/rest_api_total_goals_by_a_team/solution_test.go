@@ -9,7 +9,6 @@ type testCase struct {
 }
 
 func Test_GetTotalGoals(t *testing.T) {
-	GetAllTeamTotalGoals()
 	testCaseArr := []testCase{
 		{
 			team:  "Barcelona",
@@ -27,3 +26,23 @@ func Test_GetTotalGoals(t *testing.T) {
 		}
 	}
 }
+
+func Test_GetTotalGoals2(t *testing.T) {
+	testCaseArr := []testCase{
+		{
+			team:  "Barcelona",
+			year:  2011,
+			goals: 35,
+		},
+	}
+
+	for i, tc := range testCaseArr {
+		goals := GetTotalGoals2(tc.team, tc.year)
+		if goals == tc.goals {
+			t.Logf("PASS - %d ( %d vs %d )", i, goals, tc.goals)
+		} else {
+			t.Errorf("FAIL - %d ( %d vs %d )", i, goals, tc.goals)
+		}
+	}
+}
+
