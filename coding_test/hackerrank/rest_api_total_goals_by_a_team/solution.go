@@ -116,6 +116,8 @@ func getData[T any](url string, ch chan (Response[T])) {
 		return
 	}
 
+	defer resp.Body.Close()
+
 	bodyByte, err := io.ReadAll(resp.Body)
 	if err != nil {
 		ch <- Response[T]{Data: nil, Err: err}
@@ -195,6 +197,8 @@ func getData2[T any](url string) (*T, error) {
 	if err != nil {
 		return nil, err
 	}
+
+	defer resp.Body.Close()
 
 	bodyByte, err := io.ReadAll(resp.Body)
 	if err != nil {
