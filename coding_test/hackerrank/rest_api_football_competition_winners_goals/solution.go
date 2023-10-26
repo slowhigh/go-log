@@ -134,6 +134,8 @@ func getData[T any](url string, ch chan (Response[T])) {
 		return
 	}
 
+	defer resp.Body.Close()
+
 	bodyBytes, err := io.ReadAll(resp.Body)
 	if err != nil {
 		ch <- Response[T]{Body: nil, Err: err}
