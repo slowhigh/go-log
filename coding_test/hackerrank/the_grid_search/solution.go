@@ -1,30 +1,28 @@
 package the_grid_search
 
-import "strings"
 
+/*
+ * https://www.hackerrank.com/challenges/the-grid-search/problem?isFullScreen=true
+ */
 func gridSearch(G []string, P []string) string {
-	fullG := strings.Join(G, "")
-	fullGLen := len(fullG)
-	pIndexArr := make([][]int, len(P))
+	R, C := len(G), len(G[0])
+	r, c := len(P), len(P[0])
 
-	for i, p := range P {
-		subFullG := fullG
-		pIndexArr[i] = make([]int, 0)
-		pin := 0
-
-		for {
-			findIndex := strings.Index(subFullG, p)
-			if findIndex == -1 {
-				break
+	for i := 0; i <= R-r; i++ {
+		for j := 0; j <= C-c; j++ {
+			isMatch := true
+			for k := 0; k < r; k++ {
+				if G[i+k][j:j+c] != P[k] {
+					isMatch = false
+					break
+				}
 			}
 
-			pIndexArr[i] = append(pIndexArr[i], pin + findIndex)
-
-			if fullGLen <= pin + findIndex+1 
-
-			subFullG = subFullG[findIndex+1:]
+			if isMatch {
+				return "YES"
+			}
 		}
 	}
 
-	return ""
+	return "NO"
 }
