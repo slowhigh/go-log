@@ -2,6 +2,8 @@ package the_grid_search
 
 
 /*
+ * The Grid Search
+ *
  * https://www.hackerrank.com/challenges/the-grid-search/problem?isFullScreen=true
  */
 func gridSearch(G []string, P []string) string {
