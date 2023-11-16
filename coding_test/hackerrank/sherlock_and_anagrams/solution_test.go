@@ -10,28 +10,34 @@ type testCase struct {
 func Test_sherlockAndAnagrams(t *testing.T) {
 	testCaseArr := []testCase{
 		{
-			s: "abba",
+			s:      "abba",
 			result: 4,
 		},
 		{
-			s: "abcd",
+			s:      "abcd",
 			result: 0,
 		},
 		{
-			s: "ifailuhkqq",
+			s:      "ifailuhkqq",
 			result: 3,
 		},
 		{
-			s: "kkkk",
+			s:      "kkkk",
 			result: 10,
 		},
 		{
-			s: "cdcd",
+			s:      "cdcd",
 			result: 5,
 		},
 	}
 
 	for i, tc := range testCaseArr {
-		if
+		res := sherlockAndAnagrams(tc.s)
+
+		if res == tc.result {
+			t.Logf("PASS - %d (%d)", i, res)
+		} else {
+			t.Errorf("FAIL - %d (%d)", i, res)
+		}
 	}
 }
