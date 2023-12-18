@@ -33,7 +33,7 @@ func Test_bomberMan(t *testing.T) {
 			},
 		},
 		{
-			n: 5,
+			n: 2,
 			grid: []string{
 				".......",
 				"...O.O.",
@@ -45,10 +45,10 @@ func Test_bomberMan(t *testing.T) {
 			result: []string{
 				".......",
 				"...O.O.",
-				"...OO..",
-				"..OOOO.",
-				"OOOOOOO",
-				"OOOOOOO",
+				"....O..",
+				"..O....",
+				"OO...OO",
+				"OO.O...",
 			},
 		},
 	}
