@@ -12,6 +12,13 @@ func Test_flatlandSpaceStations(t *testing.T) {
 	testCaseArr := []testCase{
 		{
 			n:      5,
+			c:      []int32{0,1,2},
+			result: 2,
+			// 0 1 2 3 4
+			// 0 0 0 1 2
+		},
+		{
+			n:      5,
 			c:      []int32{0, 4},
 			result: 2,
 		},
