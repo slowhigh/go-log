@@ -1,7 +1,6 @@
 package flatland_space_stations
 
 import (
-	"fmt"
 	"sort"
 )
 
