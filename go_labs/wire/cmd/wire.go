@@ -12,6 +12,6 @@ import (
 )
 
 func InitializeEvent() (event.Event, error) {
-	wire.Build(event.NewEvent, greeter.NewGreeter, message.NewMessage)
+	wire.Build(event.EventSet, greeter.GreeterSet, message.MessageSet)
 	return event.Event{}, nil
 }

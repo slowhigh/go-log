@@ -3,6 +3,8 @@ package greeter
 import (
 	"github/Slowhigh/go-study/go_labs/wire/message"
 	"time"
+
+	"github.com/google/wire"
 )
 
 type Greeter struct {
@@ -26,3 +28,5 @@ func (g Greeter) Greet() message.Message {
 
 	return g.Message
 }
+
+var GreeterSet = wire.NewSet(NewGreeter)
