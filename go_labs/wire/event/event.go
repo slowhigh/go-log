@@ -1,6 +1,7 @@
 package event
 
 import (
+	"errors"
 	"fmt"
 	"github/Slowhigh/go-study/go_labs/wire/greeter"
 )
@@ -9,8 +10,12 @@ type Event struct {
 	Greeter greeter.Greeter
 }
 
-func NewEvent(g greeter.Greeter) Event {
-	return Event{Greeter: g}
+func NewEvent(g greeter.Greeter) (Event, error) {
+	if g.Grumpy {
+		return Event{}, errors.New("could not create event: event greeter is grumpy")
+	}
+	
+	return Event{Greeter: g}, nil
 }
 
 func (e Event) Start() {
