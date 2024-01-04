@@ -1,7 +1,6 @@
 package strange_counter
 
 import (
-	"fmt"
 	"math"
 )
 
@@ -9,9 +8,19 @@ import (
 // https://www.hackerrank.com/challenges/strange-code/problem?isFullScreen=false
 
 func strangeCounter(t int64) int64 {
-	// Write your code here
+	var (
+		sum         = int64(0)
+		cycleEndNum = int64(0)
+	)
 
-	fmt.Println(math.Log2(float64(t) / float64(3)))
+	for i := float64(0); ; i++ {
+		cycleEndNum += int64(3 * math.Pow(2, i))
 
-	return 0
+		if t <= cycleEndNum {
+			sum = cycleEndNum + 1
+			break
+		}
+	}
+
+	return sum - t
 }

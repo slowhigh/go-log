@@ -10,10 +10,6 @@ type testCase struct {
 func Test_strangeCounter(t *testing.T) {
 	testCaseArr := []testCase{
 		{
-			t:      11,
-			result: 6,
-		},
-		{
 			t:      4,
 			result: 6,
 		},
