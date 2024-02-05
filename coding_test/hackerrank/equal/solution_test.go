@@ -1,7 +1,6 @@
 package equal
 
 import (
-	"fmt"
 	"testing"
 )
 
@@ -11,20 +10,24 @@ type testCase struct {
 }
 
 func Test_equal(t *testing.T) {
-	testCaseArr := []testCase {
+	testCaseArr := []testCase{
 		{
-			arr: []int32 { 2,2,3,7},
+			arr:    []int32{2, 2, 3, 7},
 			result: 2,
 		},
 		{
-			arr: []int32 {10,7,12 },
+			arr:    []int32{10, 7, 12},
 			result: 3,
 		},
 	}
 
 	for i, tc := range testCaseArr {
-		res := fmt.Sprintf("%+v", equal(tc.arr))
+		res := equal(tc.arr)
 
-		if res == tc.result
+		if res == tc.result {
+			t.Logf("PASS - %d(%d)", i, res)
+		} else {
+			t.Errorf("FAIL - %d(%d)", i, res)
+		}
 	}
 }
