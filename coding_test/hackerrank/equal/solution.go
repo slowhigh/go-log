@@ -6,46 +6,38 @@ import (
 
 // Equal
 // https://www.hackerrank.com/challenges/equal/problem?isFullScreen=false
-
 func equal(arr []int32) int32 {
 	var (
-		min, max int32
-		pieces   = []int32{5, 2, 1}
-		count    = int32(0)
-		pivot    = 0
+		min   = int32(math.MaxInt32)
+		count = int32(0)
+		r     int32
 	)
 
-	for {
-		min, max = int32(math.MaxInt32), int32(0)
-		for i, v := range arr {
-			if v < min {
-				min = v
-			}
+	for _, v := range arr {
+		if v < min {
+			min = v
+		}
+	}
 
-			if max < v {
-				max = v
-				pivot = i
-			}
+	for _, v := range arr {
+		v -= min
+
+		if v >= 5 {
+			r = v / 5
+			v -= 5 * r
+			count += r
 		}
 
-		for _, v := range pieces {
-			if min <= arr[pivot]-v {
-				arr[pivot] = arr[pivot] - v
-				count++
-				continue
-			}
+		if v >= 2 {
+			r = v / 2
+			v -= 2 * r
+			count += r
 		}
 
-		equal := true
-		for i := 1; i < len(arr); i++ {
-			if arr[i-1] != arr[i] {
-				equal = false
-				break
-			}
-		}
-
-		if equal {
-			break
+		if v >= 1 {
+			r = v / 1
+			v -= 1 * r
+			count += r
 		}
 	}
 
