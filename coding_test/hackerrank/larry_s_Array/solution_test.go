@@ -10,16 +10,16 @@ type testCase struct {
 }
 
 func Test_larrysArray(t *testing.T) {
-	// arr := make([]int32, 100)
-	// for i := range arr {
-	// 	arr[i] = int32(i-len(arr)) * -1
-	// }
+	arr := make([]int32, 1000)
+	for i := range arr {
+		arr[i] = int32(i + 1)
+	}
 
 	testCaseArr := []testCase{
-		// {
-		// 	A:      arr,
-		// 	result: "YES",
-		// },
+		{
+			A:      arr,
+			result: "YES",
+		},
 		{
 			A:      []int32{3, 1, 2},
 			result: "YES",
