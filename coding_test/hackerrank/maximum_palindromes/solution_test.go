@@ -1,4 +1,4 @@
-package maximum_palindromes
+package maximumPalindromes
 
 import "testing"
 

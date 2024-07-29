@@ -1,4 +1,4 @@
-package absolute_permutation
+package absolutePermutation
 
 import (
 	"fmt"

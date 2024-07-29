@@ -1,4 +1,4 @@
-package snakes_and_ladders_the_quickest_way_up
+package snakesAndLaddersTheQuickestWayUp
 
 import "testing"
 

@@ -1,4 +1,4 @@
-package manasa_and_stones
+package manasaAndStones
 
 import (
 	"fmt"

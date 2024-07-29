@@ -1,4 +1,4 @@
-package synchronous_shopping
+package synchronousShopping
 
 import (
 	"math"

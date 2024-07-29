@@ -1,4 +1,4 @@
-package strange_counter
+package strangeCounter
 
 import "testing"
 

@@ -1,4 +1,4 @@
-package picking_numbers
+package pickingNumbers
 
 import "testing"
 

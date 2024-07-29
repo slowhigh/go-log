@@ -1,4 +1,4 @@
-package closest_numbers
+package closestNumbers
 
 import (
 	"fmt"

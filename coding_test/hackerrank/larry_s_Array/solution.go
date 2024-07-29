@@ -1,4 +1,4 @@
-package larry_s_array
+package larrySArray
 
 // Larry's Array
 // https://www.hackerrank.com/challenges/larrys-array/problem?isFullScreen=false

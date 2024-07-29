@@ -1,4 +1,4 @@
-package three_d_surface_area
+package threeDSurfaceArea
 
 import "testing"
 

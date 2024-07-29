@@ -1,4 +1,4 @@
-package the_story_of_a_tree
+package theStoryOfATree
 
 import "testing"
 

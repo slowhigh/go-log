@@ -1,4 +1,4 @@
-package special_subtree
+package specialSubtree
 
 import (
 	"sort"

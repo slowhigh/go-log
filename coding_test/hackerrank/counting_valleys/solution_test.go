@@ -1,4 +1,4 @@
-package counting_valleys
+package countingValleys
 
 import "testing"
 

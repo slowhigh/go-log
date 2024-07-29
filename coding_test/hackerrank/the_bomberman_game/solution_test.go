@@ -1,4 +1,4 @@
-package the_bomberman_game
+package theBombermanGame
 
 import (
 	"fmt"

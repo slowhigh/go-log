@@ -1,4 +1,4 @@
-package the_grid_search
+package theGridSearch
 
 
 /*

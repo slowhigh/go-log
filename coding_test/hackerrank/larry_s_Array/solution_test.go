@@ -1,4 +1,4 @@
-package larry_s_array
+package larrySArray
 
 import (
 	"testing"

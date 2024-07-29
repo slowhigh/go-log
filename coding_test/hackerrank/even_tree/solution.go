@@ -1,4 +1,4 @@
-package even_tree
+package evenTree
 
 /*
  * Even Tree

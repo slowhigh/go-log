@@ -1,4 +1,4 @@
-package rest_api_number_of_drawn_matches
+package restApiNumberOfDrawnMatches
 
 import "testing"
 

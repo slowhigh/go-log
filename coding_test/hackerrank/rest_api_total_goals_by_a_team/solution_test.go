@@ -1,4 +1,4 @@
-package rest_api_total_goals_by_a_team
+package restApiTotalGoalsByATeam
 
 import "testing"
 

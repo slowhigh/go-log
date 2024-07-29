@@ -1,4 +1,4 @@
-package journey_to_the_moon
+package journeyToTheMoon
 
 /*
  * Journey to the Moon

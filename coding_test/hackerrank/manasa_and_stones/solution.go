@@ -1,4 +1,4 @@
-package manasa_and_stones
+package manasaAndStones
 
 // Manasa and Stones
 // https://www.hackerrank.com/challenges/manasa-and-stones/problem?isFullScreen=false

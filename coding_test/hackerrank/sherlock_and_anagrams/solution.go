@@ -1,4 +1,4 @@
-package sherlock_and_anagrams
+package sherlockAndAnagrams
 
 import (
 	"sort"

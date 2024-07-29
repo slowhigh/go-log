@@ -1,4 +1,4 @@
-package happy_ladybugs
+package happyLadybugs
 
 import (
 	"sort"

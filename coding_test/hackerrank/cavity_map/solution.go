@@ -1,4 +1,4 @@
-package cavity_map
+package cavityMap
 
 // Cavity Map
 // https://www.hackerrank.com/challenges/cavity-map/problem?isFullScreen=false

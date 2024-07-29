@@ -1,4 +1,4 @@
-package minimum_loss
+package minimumLoss
 
 import (
 	"math"

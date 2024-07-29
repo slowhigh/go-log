@@ -1,4 +1,4 @@
-package picking_numbers
+package pickingNumbers
 
 // Picking Numbers
 // https://www.hackerrank.com/challenges/picking-numbers/problem

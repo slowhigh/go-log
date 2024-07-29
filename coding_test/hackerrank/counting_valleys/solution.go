@@ -1,4 +1,4 @@
-package counting_valleys
+package countingValleys
 
 // Counting Valleys
 // https://www.hackerrank.com/challenges/counting-valleys/problem?isFullScreen=false

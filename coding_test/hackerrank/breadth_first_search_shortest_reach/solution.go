@@ -1,4 +1,4 @@
-package breadth_first_search_shortest_reach
+package breadthFirstSearchShortestReach
 
 /**
  * Breadth First Search: Shortest Reach

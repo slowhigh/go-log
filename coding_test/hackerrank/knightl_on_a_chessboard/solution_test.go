@@ -1,4 +1,4 @@
-package knightl_on_a_chessboard
+package knightlOnAChessboard
 
 import (
 	"fmt"

@@ -1,4 +1,4 @@
-package flatland_space_stations
+package flatlandSpaceStations
 
 import (
 	"sort"

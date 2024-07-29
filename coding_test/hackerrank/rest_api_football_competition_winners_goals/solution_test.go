@@ -1,4 +1,4 @@
-package rest_api_football_competition_winners_goals
+package restApiFootballCompetitionWinnersGoals
 
 import "testing"
 

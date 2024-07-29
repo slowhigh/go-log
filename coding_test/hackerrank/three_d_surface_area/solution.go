@@ -1,4 +1,4 @@
-package three_d_surface_area
+package threeDSurfaceArea
 
 // 3D Surface Area
 // https://www.hackerrank.com/challenges/3d-surface-area/problem?isFullScreen=false

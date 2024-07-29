@@ -1,4 +1,4 @@
-package kruskal_mst_really_special_subtree
+package kruskalMstReallySpecialSubtree
 
 import "testing"
 

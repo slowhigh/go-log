@@ -1,4 +1,4 @@
-package even_tree
+package evenTree
 
 import "testing"
 

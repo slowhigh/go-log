@@ -1,4 +1,4 @@
-package sherlock_and_the_valid_string
+package sherlockAndTheValidString
 
 import "testing"
 

@@ -1,4 +1,4 @@
-package highest_value_palindrome
+package highestValuePalindrome
 
 import (
 	"fmt"

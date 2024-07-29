@@ -1,4 +1,4 @@
-package knightl_on_a_chessboard
+package knightlOnAChessboard
 
 // KnightL on a Chessboard
 // https://www.hackerrank.com/challenges/knightl-on-chessboard/problem?isFullScreen=false
