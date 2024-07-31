@@ -11,6 +11,47 @@ func TestTwoPluses(t *testing.T) {
 	testCaseArr := []testCase{
 		{
 			grid: []string{
+				"GGGGGGGGGGGG",
+				"GGGGGGGGGGGG",
+				"BGBGGGBGBGBG",
+				"BGBGGGBGBGBG",
+				"GGGGGGGGGGGG",
+				"GGGGGGGGGGGG",
+				"GGGGGGGGGGGG",
+				"GGGGGGGGGGGG",
+				"BGBGGGBGBGBG",
+				"BGBGGGBGBGBG",
+				"BGBGGGBGBGBG",
+				"BGBGGGBGBGBG",
+				"GGGGGGGGGGGG",
+				"GGGGGGGGGGGG",
+			},
+			result: 189,
+		},
+		{
+			grid: []string{
+				"BGB",
+				"GGG",
+				"BGB",
+			},
+			result: 1,
+		},
+		{
+			grid: []string{
+				"BB",
+				"BB",
+			},
+			result: 0,
+		},
+		{
+			grid: []string{
+				"GG",
+				"GG",
+			},
+			result: 1,
+		},
+		{
+			grid: []string{
 				"GGGGGG",
 				"GBBBGB",
 				"GGGGGG",

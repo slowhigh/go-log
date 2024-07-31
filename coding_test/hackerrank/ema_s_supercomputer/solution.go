@@ -1,6 +1,7 @@
 package emaSSupercomputer
 
 import (
+	"fmt"
 	"log/slog"
 	"strings"
 )
@@ -28,9 +29,11 @@ func twoPluses(grid []string) int32 {
 	slog.Info("cal max", "row", row, "col", col, "max", max)
 
 	tempArr := make([][]string, row)
+	cellMap := make(map[string]bool)
+
 	var count int
 	var mul int
-	for m := max; m >= 0; m-- {
+	for m := max; m >= 0; {
 		copy2D(tempArr, gridArr)
 		count = 0
 		mul = 1
@@ -38,9 +41,11 @@ func twoPluses(grid []string) int32 {
 			for y := 0 + size; y < row-size; y++ {
 				for x := 0 + size; x < col-size; x++ {
 					slog.Info("check", "m", m, "size", size, "y", y, "x", x)
-					if checkCell(row, col, tempArr, x, y, size) {
+					_, ok := cellMap[fmt.Sprintf("%d-%d-%d-%d", m, x, y, size)]
+					if !ok && checkCell(row, col, tempArr, x, y, size) {
 						count++
 						mul *= 1 + (4 * size)
+						cellMap[fmt.Sprintf("%d-%d-%d-%d", m, x, y, size)] = true
 						slog.Info("==== check true", "count", count, "nul", mul)
 					}
 
@@ -53,7 +58,11 @@ func twoPluses(grid []string) int32 {
 
 	BREAK:
 		slog.Info("compare", "result", result, "mul", mul)
-		if result < int32(mul) {
+		if count == 0 {
+			m--
+		}
+
+		if count == 2 && result < int32(mul) {
 			result = int32(mul)
 		}
 		slog.Info("compare result", "result", result)
@@ -70,6 +79,7 @@ func checkCell(row, col int, grid [][]string, x, y, size int) bool {
 	if temp[y][x] != Good {
 		return false
 	}
+	temp[y][x] = Bad
 
 	for i := 1; i <= size; i++ {
 		if x-i < 0 || temp[y][x-i] != Good {
@@ -102,4 +112,4 @@ func copy2D(dst, src [][]string) {
 		dst[i] = make([]string, len(s))
 		copy(dst[i], s)
 	}
-} 
+}
