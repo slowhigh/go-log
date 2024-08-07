@@ -14,8 +14,8 @@ type testCase struct {
 func TestCommonChild(t *testing.T) {
 	testCaseArr := []testCase {
 		{
-			s1: "HARRY",
-			s2: "SALLY",
+			s1: "SALLY",
+			s2: "HARRY",
 			result: 2,
 		},
 		{
@@ -24,18 +24,23 @@ func TestCommonChild(t *testing.T) {
 			result: 0,
 		},
 		{
-			s1: "SHINCHAN",
-			s2: "NOHARAAA",
+			s1: "NOHARAAA",
+			s2: "SHINCHAN",
 			result: 3,
 		},
 		{
-			s1: "1234526412345264",
-			s2: "4726R6664726R666",
+			s1: "4726R6664726R666", // 426666426666
+			s2: "1234526412345264", // 2426424264
 			result: 6,
 		},
 		{
-			s1: "ABCDEF",
-			s2: "FBDAMN",
+			s1: "4726R666", // 426666
+			s2: "12345264", // 24264
+			result: 3,
+		},
+		{
+			s1: "FBDAMN",
+			s2: "ABCDEF",
 			result: 2,
 		},
 	}

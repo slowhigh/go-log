@@ -1,69 +1,33 @@
 package commonChild
 
-import (
-	"log/slog"
-	"strings"
-)
-
 // Common Child
 // https://www.hackerrank.com/challenges/common-child/problem?isFullScreen=false
-
+// LCS Algorithm
+// Longest Common Subsequence
 func commonChild(s1 string, s2 string) int32 {
-	max := int32(0)
-	slog.Info("=== new case ===", "s1", s1, "s2", s2)
-	s1Arr, s2Arr := strings.Split(s1, ""), strings.Split(s2, "")
+	dp := make([][]int32, len(s1)+1)
 
-	newS1Arr, newS2Arr := make([]string, len(s1)), make([]string, len(s2))
-	for i := 0; i < len(s1); i++ {
-		if strings.Contains(s2, s1Arr[i]) {
-			newS1Arr[i] = s1Arr[i]
-		}
+	for x := 0; x < len(dp); x++ {
+		dp[x] = make([]int32, len(s2)+1)
 
-		if strings.Contains(s1, s2Arr[i]) {
-			newS2Arr[i] = s2Arr[i]
-		}
-	}
-
-	s1, s2 = strings.Join(newS1Arr, ""), strings.Join(newS2Arr, "")
-	if len(s1) != 0 && len(s2) != 0 {
-		slog.Info("new str", "s1", s1, "s2", s2)
-		count, x, y, xPivot, yPivot := int32(0), 0, 0, 0, 0
-		for {
-			slog.Info("for", "count", count, "xPivot", xPivot, "yPivot", yPivot, "x", x, "y", y)
-			if s1[x] == s2[y] {
-				slog.Info("equal", "x", x, "y", y)
-				count++
-				x++
-				y++
-				yPivot = y
+		for y := 0; y < len(s2)+1; y++ {
+			if x == 0 || y == 0 {
+				continue
+			} else if s1[x-1] == s2[y-1] {
+				dp[x][y] = dp[x-1][y-1] + 1
 			} else {
-				y++
-			}
-
-			if len(s2) <= y {
-				x++
-				y = yPivot
-			}
-
-			if len(s1) <= x || len(s2) <= yPivot {
-				xPivot++
-				x = xPivot
-				yPivot = 0
-				y = 0
-
-				if max < count {
-					max = count
-				}
-
-				count = 0
-				slog.Info("update", "max", max)
-			}
-
-			if len(s1) <= xPivot {
-				break
+				dp[x][y] = maxInt32(dp[x-1][y], dp[x][y-1])
 			}
 		}
 	}
 
-	return max
+	return dp[len(s1)][len(s2)]
+}
+
+func maxInt32(a, b int32) int32 {
+	if a > b {
+		return a
+	} else {
+		return b
+	}
 }
