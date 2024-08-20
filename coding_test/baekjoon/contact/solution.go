@@ -1,9 +1,17 @@
 package contact
 
-import "regexp"
+import (
+	"fmt"
+	"regexp"
+)
 
 func solution(signal string) string {
-	if match, _ := regexp.MatchString("(100+1+|01)+", signal); match {
+	match, err := regexp.MatchString(`^(100+1+|01)+$`, signal)
+	if err != nil {
+		fmt.Println("Error:", err)
+		return "NO"
+	}
+	if match {
 		return "YES"
 	} else {
 		return "NO"
