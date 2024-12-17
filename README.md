@@ -47,7 +47,3 @@
   - [sync](go_labs/sync)
   - [clone](go_labs/clone)
   - [mongodb](go_labs/mongodb)
-- [Coding Test](coding_test)
-  - [Programmers](coding_test/programmers)
-  - [LeetCode](coding_test/leetCode)
-  - [Hackerrank](coding_test/hackerrank)
